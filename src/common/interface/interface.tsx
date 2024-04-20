@@ -37,12 +37,8 @@ export interface IGlobalContextType {
   bookmarks: ICoin[];
   addBookmark: (coin: ICoin) => void;
   removeBookmark: (id: string) => void;
-  isShowAll: boolean;
-  changeIsShowAll: () => void;
   locale: LocaleEnum;
   changeLocale: (locale: LocaleEnum) => void;
-  listSize: PageSizeEnum;
-  changeListSize: (listSize: PageSizeEnum) => void;
 }
 
 export interface IBookmarkIconProps {

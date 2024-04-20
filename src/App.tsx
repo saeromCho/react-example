@@ -6,7 +6,7 @@ import LayoutWithGNB from "@common/components/LayoutWithGNB";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { GlobalProvider } from "@contexts/GlobalContext";
-
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -24,6 +24,7 @@ const App = () => {
         </Routes>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false}/>
+      <Toaster />
     </GlobalProvider>
     </QueryClientProvider>
 	);
