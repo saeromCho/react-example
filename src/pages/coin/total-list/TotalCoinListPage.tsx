@@ -1,21 +1,93 @@
 import { useQuery } from "@tanstack/react-query";
 import {fetchCoins} from '@apis/coin-gecko';
-import { PAGING_SIZE } from "@static/constant";
 import CoinTable from "@common/components/CoinTable";
 import { columnsData } from "@lib/utils";
+import { useEffect, useState } from "react";
+import { ICoin } from "@common/interface/interface";
+import { useGlobalContext } from "@contexts/GlobalContext";
+import { CurrencyEnum, PageSizeEnum, ViewTypeEnum } from "@lib/enum";
+
 
 const TotalCoinListPage = () => {
-  const { data, error, isLoading, isError }  = useQuery({
-    queryKey: ['coins'],
-    queryFn: () => fetchCoins('krw', 'market_cap_asc', PAGING_SIZE, 1,'en'), refetchOnWindowFocus: false,
-  })
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error: {error.message}</div>;
+  const { bookmarks } = useGlobalContext();
+  const [listData, setListData] = useState<ICoin[]>([]);
+  const [viewType, setViewType] = useState(ViewTypeEnum.TOTAL);
+  const [currency, setCurrency] = useState(CurrencyEnum.KRW);
+  const [pageSize, setPageSize] = useState(PageSizeEnum.FIFTY);
+  const [page, setPage] = useState(1);
+
+  const getQueryKey = () => {
+    return ['coins', currency, pageSize, page];
+  };
+
+  const fetchData = () => {
+    return viewType === ViewTypeEnum.TOTAL ? fetchCoins(currency, 'market_cap_desc', pageSize, page,'ko') : Promise.resolve(bookmarks);
+  };
+
+  const queryResults = useQuery({
+    queryKey: getQueryKey(),
+    queryFn: fetchData,
+    refetchOnWindowFocus: false
+  });
+
+  useEffect(() => {
+    if (queryResults.data) {
+      setListData(queryResults.data);
+    }
+  }, [queryResults.data]);
+
+  const handleIsShowAllChange = (event: any) => {
+    if(event.target.value == ViewTypeEnum.TOTAL) {
+      setViewType(ViewTypeEnum.TOTAL)
+    } else {
+      setViewType(ViewTypeEnum.BOOKMARKS)
+      setListData(bookmarks);
+    }
+  };
+
+  const handleCurrencyChange = (event: any) => {
+    console.log(event.target.value);
+    if(event.target.value == CurrencyEnum.KRW) {
+      setCurrency(CurrencyEnum.KRW)
+    } else {
+      setCurrency(CurrencyEnum.USD)
+    }
+    setPage(1);
+  };
+
+  const handlePageSizeChange = (event: any) => {
+    if(event.target.value == PageSizeEnum.TEN) {
+      setPageSize(PageSizeEnum.TEN)
+    } else if(event.target.value == PageSizeEnum.THIRTY){
+      setPageSize(PageSizeEnum.THIRTY)
+    } else {
+      setPageSize(PageSizeEnum.FIFTY)
+    }
+    setPage(1);
+  };
+
+
+  if (queryResults.isError) return <div>Error: {queryResults.error.message}</div>;
 
   
   return (
     <div>
-      <CoinTable name={"가상자산 시세 목록"} data={data} columns={columnsData} noDataMessage="No coins data available" useMinHeight={true} />
+    <div>
+       <select value={viewType} onChange={handleIsShowAllChange}>
+        <option value={ViewTypeEnum.TOTAL}>전체 보기</option>
+        <option value={ViewTypeEnum.BOOKMARKS}>북마크 보기</option>
+      </select>
+       <select value={currency} onChange={handleCurrencyChange}>
+        <option value={CurrencyEnum.KRW}>KRW 보기</option>
+        <option value={CurrencyEnum.USD}>USD 보기</option>
+      </select>
+      <select value={pageSize} onChange={handlePageSizeChange}>
+        <option value={PageSizeEnum.TEN}>10개 보기</option>
+        <option value={PageSizeEnum.THIRTY}>30개 보기</option>
+        <option value={PageSizeEnum.FIFTY}>50개 보기</option>
+      </select>
+      </div>
+      {queryResults.isLoading ? <div>Loading...</div> : <CoinTable name={"가상자산 시세 목록"} data={listData} columns={columnsData} noDataMessage="No coins data available" useMinHeight={true} />}
     </div>
   );
   

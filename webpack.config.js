@@ -18,6 +18,7 @@ module.exports = {
       '@apis': path.resolve(__dirname, './src/apis'),
       '@static': path.resolve(__dirname, './src/static'),
       '@contexts': path.resolve(__dirname, './src/contexts'),
+      '@lib': path.resolve(__dirname, './src/lib'),
     },
   },
   module: {

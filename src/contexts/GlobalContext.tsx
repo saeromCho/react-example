@@ -1,23 +1,26 @@
-import { ICoin } from '@common/interface/interface';
+import { ICoin, IGlobalContextType } from '@common/interface/interface';
+import { PageSizeEnum, LocaleEnum } from '@lib/enum';
 import React, { createContext, useContext, useState } from 'react';
 
-interface BookmarkContextType {
-  bookmarks: ICoin[];
-  addBookmark: (coin: ICoin) => void;
-  removeBookmark: (id: string) => void;
-}
 
-const GlobalContext = createContext<BookmarkContextType>({
+const GlobalContext = createContext<IGlobalContextType>({
   bookmarks: [],
   addBookmark: () => {},
-  removeBookmark: () => {}
+  removeBookmark: () => {},
+  locale: LocaleEnum.KO,
+  changeLocale: (locale: LocaleEnum) => {},
 });
 
 export const useGlobalContext = () => useContext(GlobalContext);
 
 export const GlobalProvider: React.FC<any> = ({ children  }) => {
   const [bookmarks, setBookmarks] = useState<ICoin[]>([]);
+  const [locale, setLocale] = useState(LocaleEnum.KO);
 
+  const changeLocale = (locale: LocaleEnum) => {
+    setLocale(locale);
+  }
+ 
   const addBookmark = (coin: ICoin) => {
     setBookmarks(prev => [...prev, coin]);
   };
@@ -27,7 +30,7 @@ export const GlobalProvider: React.FC<any> = ({ children  }) => {
   };
 
   return (
-    <GlobalContext.Provider value={{ bookmarks, addBookmark, removeBookmark}}>
+    <GlobalContext.Provider value={{ locale, changeLocale, bookmarks, addBookmark, removeBookmark}}>
       {children}
     </GlobalContext.Provider>
   );

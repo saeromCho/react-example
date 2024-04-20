@@ -1,3 +1,6 @@
+import { PageSizeEnum, LocaleEnum } from "@lib/enum";
+import { Dispatch, SetStateAction } from "react";
+
 export interface ICoin {
   id: string;
   symbol: string;
@@ -28,4 +31,21 @@ export interface ICoin {
   price_change_percentage_1h_in_currency: number
   price_change_percentage_24h_in_currency: number,
   price_change_percentage_7d_in_currency: number,
+}
+
+export interface IGlobalContextType {
+  bookmarks: ICoin[];
+  addBookmark: (coin: ICoin) => void;
+  removeBookmark: (id: string) => void;
+  isShowAll: boolean;
+  changeIsShowAll: () => void;
+  locale: LocaleEnum;
+  changeLocale: (locale: LocaleEnum) => void;
+  listSize: PageSizeEnum;
+  changeListSize: (listSize: PageSizeEnum) => void;
+}
+
+export interface IBookmarkIconProps {
+  isBookmarked: boolean;
+  coin: ICoin;
 }

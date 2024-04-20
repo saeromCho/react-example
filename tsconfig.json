@@ -19,6 +19,7 @@
         "@apis/*": ["src/apis/*"],
         "@static/*": ["src/static/*"],
         "@contexts/*":  ["src/contexts/*"],
+        "@lib/*":  ["src/lib/*"],
       }
     },
     "include": ["src"],
