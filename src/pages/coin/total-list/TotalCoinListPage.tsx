@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { ICoin } from "@common/interface/interface";
 import { useGlobalContext } from "@contexts/GlobalContext";
 import { CurrencyEnum, PageSizeEnum, ViewTypeEnum } from "@lib/enum";
-import toast from "react-hot-toast";
 
 
 const TotalCoinListPage = () => {
@@ -38,7 +37,7 @@ const TotalCoinListPage = () => {
     }
   }, [queryResults.data]);
 
-  const handleIsShowAllChange = (event: any) => {
+  const handleChangeIsShowAll = (event: any) => {
     if(event.target.value == ViewTypeEnum.TOTAL) {
       setViewType(ViewTypeEnum.TOTAL)
     } else {
@@ -47,7 +46,7 @@ const TotalCoinListPage = () => {
     }
   };
 
-  const handleCurrencyChange = (event: any) => {
+  const handleChangeCurrency = (event: any) => {
     console.log(event.target.value);
     if(event.target.value == CurrencyEnum.KRW) {
       setCurrency(CurrencyEnum.KRW)
@@ -59,7 +58,7 @@ const TotalCoinListPage = () => {
     setPage(1);
   };
 
-  const handlePageSizeChange = (event: any) => {
+  const handleChangePageSize = (event: any) => {
     if(event.target.value == PageSizeEnum.TEN) {
       setPageSize(PageSizeEnum.TEN)
     } else if(event.target.value == PageSizeEnum.THIRTY){
@@ -70,6 +69,11 @@ const TotalCoinListPage = () => {
     setPage(1);
   };
 
+  const handleChangePagination = () => {
+    setPageSize(pageSize + pageSize);
+    setPage(page + 1);
+  }
+
 
   if (queryResults.isError) return <div>Error: {queryResults.error.message}</div>;
 
@@ -77,21 +81,22 @@ const TotalCoinListPage = () => {
   return (
     <div>
     <div>
-       <select value={viewType} onChange={handleIsShowAllChange}>
+       <select value={viewType} onChange={handleChangeIsShowAll}>
         <option value={ViewTypeEnum.TOTAL}>전체 보기</option>
         <option value={ViewTypeEnum.BOOKMARKS}>북마크 보기</option>
       </select>
-       <select value={currency} onChange={handleCurrencyChange}>
+       <select value={currency} onChange={handleChangeCurrency}>
         <option value={CurrencyEnum.KRW}>KRW 보기</option>
         <option value={CurrencyEnum.USD}>USD 보기</option>
       </select>
-      <select value={pageSize} onChange={handlePageSizeChange}>
+      <select value={pageSize} onChange={handleChangePageSize}>
         <option value={PageSizeEnum.TEN}>10개 보기</option>
         <option value={PageSizeEnum.THIRTY}>30개 보기</option>
         <option value={PageSizeEnum.FIFTY}>50개 보기</option>
       </select>
       </div>
       {queryResults.isLoading ? <div>Loading...</div> : <CoinTable name={"가상자산 시세 목록"} data={listData} columns={getColumnsData(currency)} noDataMessage="No coins data available" useMinHeight={true} />}
+      {!queryResults.isLoading && <div onClick={() => handleChangePagination()}>+ 더보기</div>}
     </div>
   );
   
