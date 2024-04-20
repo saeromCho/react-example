@@ -18,7 +18,7 @@ const TotalCoinListPage = () => {
   const [page, setPage] = useState(1);
  
   const getQueryKey = () => {
-    return ['coins', currency, pageSize, page];
+    return ['coins', viewType, currency, pageSize, page];
   };
   const fetchData = () => {
     return viewType === ViewTypeEnum.TOTAL ? fetchCoins(currency, 'market_cap_desc', pageSize, page,'en') : Promise.resolve(bookmarks);
@@ -47,7 +47,7 @@ const TotalCoinListPage = () => {
     }
   }, [queryResults.error]);
   
-  const handleChangeIsShowAll = (event: any) => {
+  const handleChangeViewType = (event: any) => {
     if(event.target.value == ViewTypeEnum.TOTAL) {
       setViewType(ViewTypeEnum.TOTAL)
     } else {
@@ -92,7 +92,7 @@ const TotalCoinListPage = () => {
   return (
     <div>
     <div>
-       <select value={viewType} onChange={handleChangeIsShowAll}>
+       <select value={viewType} onChange={handleChangeViewType}>
         <option value={ViewTypeEnum.TOTAL}>전체 보기</option>
         <option value={ViewTypeEnum.BOOKMARKS}>북마크 보기</option>
       </select>
@@ -107,7 +107,7 @@ const TotalCoinListPage = () => {
       </select>
       </div>
       {queryResults.isLoading ? <div>Loading...</div> : <CoinTable name={"가상자산 시세 목록"} data={listData} columns={getColumnsData(currency)} noDataMessage="No coins data available"  />}
-      {!queryResults.isLoading && <div onClick={() => handleChangePagination()}>+ 더보기</div>}
+      {!queryResults.isLoading && viewType == ViewTypeEnum.TOTAL && <div onClick={() => handleChangePagination()}>+ 더보기</div>}
     </div>
   );
   
