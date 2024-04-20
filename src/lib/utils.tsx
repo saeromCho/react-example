@@ -15,10 +15,11 @@ export const getColumnsData = (currency: CurrencyEnum) => [
         {info.getValue()}
       </div>
     ),
-    size: 200,
+    size: 150,
   },
   {
     accessorKey: 'symbol',
+    header: '',
     cell: (info: any) => (
       <SymbolText >
         {info.getValue()}
@@ -34,7 +35,7 @@ export const getColumnsData = (currency: CurrencyEnum) => [
         {currency === CurrencyEnum.KRW ? '₩' : '$'}{formatNumber(info.getValue())}
       </CurrencyText>
     ),
-    size: 150,
+    size: 300,
   },
   {
     accessorKey: 'price_change_percentage_1h_in_currency',
@@ -44,7 +45,7 @@ export const getColumnsData = (currency: CurrencyEnum) => [
         {formatNumber(info.getValue())}%
       </CurrencyText>
     ),
-    size: 150,
+    size: 200,
   },
   {
     accessorKey: 'price_change_percentage_24h_in_currency',
@@ -74,7 +75,7 @@ export const getColumnsData = (currency: CurrencyEnum) => [
         {currency === CurrencyEnum.KRW ? '₩' : '$'}{formatNumber(info.getValue(), false)}
       </CurrencyText>
     ),
-    size: 200,
+    size: 300,
   }
 ];
 

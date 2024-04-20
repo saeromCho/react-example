@@ -128,7 +128,7 @@ export const CurrencyText = styled.div`
 `;
 
 export const SymbolText = styled.div`
-  font-size:12px;
-  color: lightgrey;
+  font-size:14px;
+  color: grey;
   text-align: right;
 `;

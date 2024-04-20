@@ -8,14 +8,11 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { GlobalProvider } from "@contexts/GlobalContext";
 import toast, { Toaster } from "react-hot-toast";
 import ErrorPage from "@pages/error/ErrorPage";
-import { useNavigate } from "react-router-dom";
 
 const App = () => {
   const queryClient = new QueryClient({
     queryCache: new QueryCache({
       onError: (error: Error, query: Query<unknown, unknown, unknown, QueryKey>) => {
-        const navigate = useNavigate();
-        navigate('/error');
         if (query.meta?.errorMessage) {
           const errorMessage = typeof query.meta?.errorMessage === 'string' ? query.meta.errorMessage : "An unknown error occurred";
           toast.error(errorMessage, {

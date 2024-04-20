@@ -6,9 +6,11 @@ import { useEffect, useState } from "react";
 import { ICoin } from "@common/interface/interface";
 import { useGlobalContext } from "@contexts/GlobalContext";
 import { CurrencyEnum, PageSizeEnum, ViewTypeEnum } from "@lib/enum";
+import { useNavigate } from "react-router-dom";
 
 
 const TotalCoinListPage = () => {
+  const navigate = useNavigate();
   const { bookmarks, changeCurrency } = useGlobalContext();
   const [listData, setListData] = useState<ICoin[]>([]);
   const [viewType, setViewType] = useState(ViewTypeEnum.TOTAL);
@@ -37,6 +39,17 @@ const TotalCoinListPage = () => {
     }
   }, [queryResults.data]);
 
+  useEffect(() => {
+      setListData(listData.concat(queryResults.data));
+  }, [pageSize]);
+
+
+  useEffect(() => {
+    if (queryResults.error) {
+        navigate('/error');
+    }
+  }, [queryResults.error, navigate]);
+  
   const handleChangeIsShowAll = (event: any) => {
     if(event.target.value == ViewTypeEnum.TOTAL) {
       setViewType(ViewTypeEnum.TOTAL)
