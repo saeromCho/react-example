@@ -15,7 +15,7 @@
       "paths": {
         "@*": ["src/*"],
         "@apis/*": ["src/apis/*"],
-        "@components/*": ["src/components/*"],
+        "@common/*":["src/common/*"],
         "@pages/*": ["src/pages/*"],
         "@static/*": ["src/static/*"],
       }

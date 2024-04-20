@@ -22,6 +22,7 @@ const App = () => {
         </Routes>
       </BrowserRouter>
       <ReactQueryDevtools />
+      <ReactQueryDevtools initialIsOpen={false}/>
     </QueryClientProvider>
 	);
 };

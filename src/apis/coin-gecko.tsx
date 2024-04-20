@@ -1,3 +1,4 @@
+import { PAGING_SIZE } from "@static/constant";
 import axiosInstance from "./axios-instance";
 
 export const checkPing = async () => {
@@ -10,7 +11,7 @@ export const checkPing = async () => {
   }
 }
 
-export const fetchCoins = async (currency = 'usd', order = 'market_cap_desc', per_page = 100, page = 1, sparkline = false) => {
+  export const fetchCoins = async (currency: string, order:string, per_page: number = PAGING_SIZE, page:number, locale: string) => {
   try {
     const response = await axiosInstance.get('/coins/markets', {
       params: {
@@ -18,7 +19,9 @@ export const fetchCoins = async (currency = 'usd', order = 'market_cap_desc', pe
         order: order,
         per_page: per_page,
         page: page,
-        sparkline: sparkline,
+        locale: locale,
+        price_change_percentage: '1h,24h,7d',
+        precision: 2,
       },
     });
     return response.data;
