@@ -1,13 +1,12 @@
-module.exports = {
+export default {
     root: true,
     env: {
         "browser": true, 
         "es2021": true,
         "node": true
     },
-  
+ 
     parser: '@typescript-eslint/parser',
-  
     parserOptions: {
       ecmaVersion: 2021,
       sourceType: 'module',
@@ -29,7 +28,6 @@ module.exports = {
   
     rules: {
       'react/react-in-jsx-scope': 0,
-      'react-hooks/exhaustive-deps': 1,
       "no-unused-vars": "warn",
       "no-console": "off"
     },  

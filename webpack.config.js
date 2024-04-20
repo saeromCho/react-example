@@ -8,18 +8,14 @@ module.exports = {
     filename: 'bundle.js',
     clean: true,
   },
+  
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@pages': path.resolve(__dirname, './src/pages'),
       '@components': path.resolve(__dirname, './src/components'),
     },
-  },
-  devServer: {
-    historyApiFallback: true,
-    port: 3000,
-    hot: true,
-    static: path.resolve(__dirname, "dist"),
   },
   module: {
     rules: [
@@ -50,8 +46,10 @@ module.exports = {
   ],
   devtool: 'inline-source-map',
   devServer: {
-    static: './dist',
-    hot: true,
+    historyApiFallback: true,
+    port: 3000,
     open: true,
+    hot: true,
+    static: path.resolve(__dirname, "dist"),
   },
 };
