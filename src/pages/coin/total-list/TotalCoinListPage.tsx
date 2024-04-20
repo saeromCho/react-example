@@ -6,11 +6,10 @@ import { useEffect, useState } from "react";
 import { ICoin } from "@common/interface/interface";
 import { useGlobalContext } from "@contexts/GlobalContext";
 import { CurrencyEnum, PageSizeEnum, ViewTypeEnum } from "@lib/enum";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 
 const TotalCoinListPage = () => {
-  const navigate = useNavigate();
   const { bookmarks, changeCurrency } = useGlobalContext();
   const [listData, setListData] = useState<ICoin[]>([]);
   const [viewType, setViewType] = useState(ViewTypeEnum.TOTAL);
@@ -39,16 +38,14 @@ const TotalCoinListPage = () => {
     }
   }, [queryResults.data]);
 
-  useEffect(() => {
-      setListData(listData.concat(queryResults.data));
-  }, [pageSize]);
 
 
   useEffect(() => {
     if (queryResults.error) {
-        navigate('/error');
+      /// TODO: 로직 필요시 추가
+      
     }
-  }, [queryResults.error, navigate]);
+  }, [queryResults.error]);
   
   const handleChangeIsShowAll = (event: any) => {
     if(event.target.value == ViewTypeEnum.TOTAL) {
@@ -88,8 +85,9 @@ const TotalCoinListPage = () => {
   }
 
 
-  if (queryResults.isError) return <div>Error: {queryResults.error.message}</div>;
-
+  if (queryResults.error) {
+    return <Navigate to="/error" replace />;
+  }
   
   return (
     <div>
@@ -108,7 +106,7 @@ const TotalCoinListPage = () => {
         <option value={PageSizeEnum.FIFTY}>50개 보기</option>
       </select>
       </div>
-      {queryResults.isLoading ? <div>Loading...</div> : <CoinTable name={"가상자산 시세 목록"} data={listData} columns={getColumnsData(currency)} noDataMessage="No coins data available" useMinHeight={true} />}
+      {queryResults.isLoading ? <div>Loading...</div> : <CoinTable name={"가상자산 시세 목록"} data={listData} columns={getColumnsData(currency)} noDataMessage="No coins data available"  />}
       {!queryResults.isLoading && <div onClick={() => handleChangePagination()}>+ 더보기</div>}
     </div>
   );

@@ -7,7 +7,7 @@ const BookmarkedCoinListPage = () => {
 
   return (
     <div>
-      <CoinTable name={"북마크 목록"} data={bookmarks} columns={getColumnsData(currency)} noDataMessage="No coins data available" useMinHeight={true} />
+      <CoinTable name={"북마크 목록"} data={bookmarks} columns={getColumnsData(currency)} noDataMessage="No coins data available" />
     </div>
   );
 };

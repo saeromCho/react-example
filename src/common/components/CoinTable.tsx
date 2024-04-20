@@ -7,11 +7,9 @@ export type TableProps<T> = {
   data: T[];
   columns: ColumnDef<T>[];
   noDataMessage?: string;
-  useMinHeight?: boolean;
 };
 
 const CoinTable = <T,>({
-  useMinHeight = true,
   data,
   columns,
   noDataMessage,
@@ -38,16 +36,16 @@ const CoinTable = <T,>({
           )}
         </TableHeader>
       ))}
-      <TableBody useMinHeight={useMinHeight}>
+      <TableBody>
         {isNoData ? (
-          <NoDataComponent useMinHeight={useMinHeight}>{noDataMessage}</NoDataComponent>
+          <NoDataComponent>{noDataMessage}</NoDataComponent>
         ) : (
           getRowModel().rows.map((row) => (
             <Fragment key={row.id}>
               <TableRow className="row">
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} width={cell.column.getSize()}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {flexRender(cell.column.columnDef.cell, cell?.getContext())}
                   </TableCell>
                 ))}
               </TableRow>
@@ -108,15 +106,15 @@ const TableHeader = styled.div`
   background-color: lightgrey;
 `;
 
-const TableBody = styled.div<{ useMinHeight: boolean }>`
-  min-height: ${({ useMinHeight }) => (useMinHeight ? '560px' : 'auto')};
+const TableBody = styled.div`
+  min-height: 'auto';
   display: flex;
   flex-direction: column;
 `;
 
-const NoDataComponent = styled.div<{ useMinHeight: boolean }>`
+const NoDataComponent = styled.div`
   width: 100%;
-  height: ${({ useMinHeight }) => (useMinHeight ? '560px' : 'auto')};
+  height: 'auto';
   display: flex;
   justify-content: center;
   align-items: center;
