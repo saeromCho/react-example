@@ -32,14 +32,10 @@ const GNBItem = styled.div`
 `;
   
 const StyledNavLink = styled(NavLink)`
-  color: blue; /* 기본 상태 색상 */
+  color: blue;
   text-decoration: none;
   width: 50%;
   &.active {
-    color: red; /* 활성 상태 색상 */
+    color: red;
   }
 `;
-// const .gnb-item.active {
-//   color: #fff;
-//   background-color: #000; /* 선택된 탭 색상 */
-// }

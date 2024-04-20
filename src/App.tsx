@@ -1,23 +1,28 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import BookmarkedListPage from "@pages/bookmarked-list/BookmarkedList";
-import CoinDetailPage from "@pages/coins/detail/CoinDetail";
-import CoinsListPage from "@pages/coins/CoinsList";
+import BookmarkedCoinListPage from "@pages/coin/bookmarked-list/BookmarkedCoinListPage";
+import CoinDetailPage from "@pages/coin/detail/CoinDetailPage";
+import TotalCoinListPage from "@pages/coin/total-list/TotalCoinListPage";
 import LayoutWithGNB from "@components/LayoutWithGNB";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 
 const App = () => {
+  const queryClient = new QueryClient();
 	return (
-		<BrowserRouter>
-      <Routes>
-         <Route path="/" element={<LayoutWithGNB />}>
-          <Route index element={<Navigate replace to="/coins" />} />
-          <Route path="coins" element={<CoinsListPage />} />
-          <Route path="bookmarked_list" element={<BookmarkedListPage />} />
-        </Route>
-        <Route path="/coins/:id" element={<CoinDetailPage />} />
-      </Routes>
-    </BrowserRouter>
-		
+     <QueryClientProvider client={queryClient}>
+		  <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LayoutWithGNB />}>
+            <Route index element={<Navigate replace to="/coins" />} />
+            <Route path="coins" element={<TotalCoinListPage />} />
+            <Route path="bookmarked_list" element={<BookmarkedCoinListPage />} />
+          </Route>
+          <Route path="/coins/:id" element={<CoinDetailPage />} />
+        </Routes>
+      </BrowserRouter>
+      <ReactQueryDevtools />
+    </QueryClientProvider>
 	);
 };
   
