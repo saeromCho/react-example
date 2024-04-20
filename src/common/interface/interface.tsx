@@ -1,4 +1,4 @@
-import { PageSizeEnum, LocaleEnum } from "@lib/enum";
+import { PageSizeEnum, LocaleEnum, CurrencyEnum } from "@lib/enum";
 import { Dispatch, SetStateAction } from "react";
 
 export interface ICoin {
@@ -39,6 +39,8 @@ export interface IGlobalContextType {
   removeBookmark: (id: string) => void;
   locale: LocaleEnum;
   changeLocale: (locale: LocaleEnum) => void;
+  currency: CurrencyEnum,
+  changeCurrency: (currency: CurrencyEnum) => void,
 }
 
 export interface IBookmarkIconProps {

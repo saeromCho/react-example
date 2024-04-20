@@ -121,3 +121,14 @@ const NoDataComponent = styled.div<{ useMinHeight: boolean }>`
   justify-content: center;
   align-items: center;
 `;
+
+export const CurrencyText = styled.div`
+  font-size:16px;
+  text-align: right;
+`;
+
+export const SymbolText = styled.div`
+  font-size:12px;
+  color: lightgrey;
+  text-align: right;
+`;

@@ -10,6 +10,7 @@ const BookmarkIcon: React.FC<IBookmarkIconProps> = ({ isBookmarked, coin }) => {
   const notify = (isBookmarked: boolean) => {
     if(isBookmarked) {
         toast("북마크가 해제되었습니다.", {
+          duration: 3000,
           position: "bottom-center",
           style: {
             cursor: 'pointer',
@@ -23,6 +24,7 @@ const BookmarkIcon: React.FC<IBookmarkIconProps> = ({ isBookmarked, coin }) => {
         });
     } else {
       toast("북마크가 설정되었습니다.", {
+        duration: 3000,
         position: "bottom-center",
         style: {
           cursor: 'pointer',

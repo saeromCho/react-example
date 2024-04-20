@@ -1,34 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
 import {fetchCoins} from '@apis/coin-gecko';
 import CoinTable from "@common/components/CoinTable";
-import { columnsData } from "@lib/utils";
+import { getColumnsData } from "@lib/utils";
 import { useEffect, useState } from "react";
 import { ICoin } from "@common/interface/interface";
 import { useGlobalContext } from "@contexts/GlobalContext";
 import { CurrencyEnum, PageSizeEnum, ViewTypeEnum } from "@lib/enum";
+import toast from "react-hot-toast";
 
 
 const TotalCoinListPage = () => {
-  const { bookmarks } = useGlobalContext();
+  const { bookmarks, changeCurrency } = useGlobalContext();
   const [listData, setListData] = useState<ICoin[]>([]);
   const [viewType, setViewType] = useState(ViewTypeEnum.TOTAL);
   const [currency, setCurrency] = useState(CurrencyEnum.KRW);
   const [pageSize, setPageSize] = useState(PageSizeEnum.FIFTY);
   const [page, setPage] = useState(1);
-
+ 
   const getQueryKey = () => {
     return ['coins', currency, pageSize, page];
   };
-
   const fetchData = () => {
-    return viewType === ViewTypeEnum.TOTAL ? fetchCoins(currency, 'market_cap_desc', pageSize, page,'ko') : Promise.resolve(bookmarks);
+    return viewType === ViewTypeEnum.TOTAL ? fetchCoins(currency, 'market_cap_desc', pageSize, page,'en') : Promise.resolve(bookmarks);
   };
-
   const queryResults = useQuery({
     queryKey: getQueryKey(),
     queryFn: fetchData,
-    refetchOnWindowFocus: false
-  });
+    meta: {
+      errorMessage: '코인 목록을 가져오는데 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.',
+    },
+    refetchOnWindowFocus: false,
+});
 
   useEffect(() => {
     if (queryResults.data) {
@@ -49,8 +51,10 @@ const TotalCoinListPage = () => {
     console.log(event.target.value);
     if(event.target.value == CurrencyEnum.KRW) {
       setCurrency(CurrencyEnum.KRW)
+      changeCurrency(CurrencyEnum.KRW)
     } else {
       setCurrency(CurrencyEnum.USD)
+      changeCurrency(CurrencyEnum.USD)
     }
     setPage(1);
   };
@@ -87,7 +91,7 @@ const TotalCoinListPage = () => {
         <option value={PageSizeEnum.FIFTY}>50개 보기</option>
       </select>
       </div>
-      {queryResults.isLoading ? <div>Loading...</div> : <CoinTable name={"가상자산 시세 목록"} data={listData} columns={columnsData} noDataMessage="No coins data available" useMinHeight={true} />}
+      {queryResults.isLoading ? <div>Loading...</div> : <CoinTable name={"가상자산 시세 목록"} data={listData} columns={getColumnsData(currency)} noDataMessage="No coins data available" useMinHeight={true} />}
     </div>
   );
   

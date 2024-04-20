@@ -8,7 +8,7 @@ module.exports = {
     filename: 'bundle.js',
     clean: true,
   },
-  
+
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
@@ -38,14 +38,13 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
   plugins: [
-  
     new HtmlWebpackPlugin({
-      template: "./public/index.html",
+      template: './public/index.html',
     }),
   ],
   devtool: 'inline-source-map',
@@ -54,6 +53,9 @@ module.exports = {
     port: 3000,
     open: true,
     hot: true,
-    static: path.resolve(__dirname, "dist"),
+    static: path.resolve(__dirname, 'dist'),
+    client: {
+      reconnect: false,
+    },
   },
 };
