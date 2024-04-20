@@ -14,10 +14,11 @@
       "baseUrl": ".",
       "paths": {
         "@*": ["src/*"],
-        "@apis/*": ["src/apis/*"],
-        "@common/*":["src/common/*"],
         "@pages/*": ["src/pages/*"],
+        "@common/*":["src/common/*"],
+        "@apis/*": ["src/apis/*"],
         "@static/*": ["src/static/*"],
+        "@contexts/*":  ["src/contexts/*"],
       }
     },
     "include": ["src"],

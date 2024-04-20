@@ -17,6 +17,7 @@ module.exports = {
       '@common': path.resolve(__dirname, './src/common'),
       '@apis': path.resolve(__dirname, './src/apis'),
       '@static': path.resolve(__dirname, './src/static'),
+      '@contexts': path.resolve(__dirname, './src/contexts'),
     },
   },
   module: {
