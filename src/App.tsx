@@ -3,13 +3,37 @@ import BookmarkedCoinListPage from "@pages/coin/bookmarked-list/BookmarkedCoinLi
 import CoinDetailPage from "@pages/coin/detail/CoinDetailPage";
 import TotalCoinListPage from "@pages/coin/total-list/TotalCoinListPage";
 import LayoutWithGNB from "@common/components/LayoutWithGNB";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Query, QueryCache, QueryClient, QueryClientProvider, QueryKey } from "@tanstack/react-query";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { GlobalProvider } from "@contexts/GlobalContext";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import ErrorPage from "@pages/error/ErrorPage";
+import { useNavigate } from "react-router-dom";
 
 const App = () => {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    queryCache: new QueryCache({
+      onError: (error: Error, query: Query<unknown, unknown, unknown, QueryKey>) => {
+        const navigate = useNavigate();
+        navigate('/error');
+        if (query.meta?.errorMessage) {
+          const errorMessage = typeof query.meta?.errorMessage === 'string' ? query.meta.errorMessage : "An unknown error occurred";
+          toast.error(errorMessage, {
+            duration: 4000,
+            position: 'top-center',
+            icon: '🙏',
+          });
+        } else {
+          toast.error("An error occurred", {
+            duration: 4000,
+            position: 'top-center',
+            icon: '🙏',
+          });
+        }
+      },
+    }),
+  })
+
 	return (
     <QueryClientProvider client={queryClient}>
        <GlobalProvider>
@@ -21,6 +45,7 @@ const App = () => {
             <Route path="bookmarked_list" element={<BookmarkedCoinListPage />} />
           </Route>
           <Route path="/coins/:id" element={<CoinDetailPage />} />
+          <Route path="/error" element={<ErrorPage />}></Route>
         </Routes>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false}/>
