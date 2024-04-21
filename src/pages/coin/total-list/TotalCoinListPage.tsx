@@ -7,6 +7,7 @@ import { ICoin } from "@common/interface/interface";
 import { useGlobalContext } from "@contexts/GlobalContext";
 import { CurrencyEnum, PageSizeEnum, ViewTypeEnum } from "@lib/enum";
 import { Navigate } from "react-router-dom";
+import LoadingDots from "@common/components/LoadingDots";
 
 
 const TotalCoinListPage = () => {
@@ -122,7 +123,7 @@ const TotalCoinListPage = () => {
         <option value={PageSizeEnum.FIFTY}>50개 보기</option>
       </select>
       </div>
-      {queryResults.isLoading ? <div>Loading...</div> : <CoinTable name={"가상자산 시세 목록"} data={viewType == ViewTypeEnum.TOTAL ? fetchListData : bookmarkedListData} columns={getColumnsData(currency)} noDataMessage="No coins data available"  />}
+      {queryResults.isLoading ? <LoadingDots/> : <CoinTable name={"가상자산 시세 목록"} data={viewType == ViewTypeEnum.TOTAL ? fetchListData : bookmarkedListData} columns={getColumnsData(currency)} noDataMessage="No coins data available"  />}
       {!queryResults.isLoading && viewType == ViewTypeEnum.TOTAL && <div onClick={() => handleChangePagination()}>+ 더보기</div>}
     </div>
   );

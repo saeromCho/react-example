@@ -7,22 +7,15 @@ const CurrencyInput: React.FC<ICurrencyProps> = ({currency}) => {
 
   const handleInputBChange = (event: any) => {
     let { value } = event.target;
-    value = value.replace(/,/g, ''); // 쉼표 제거
+    value = value.replace(/,/g, '');
   
-    // 값이 비어있지 않고, 유효한 숫자 형식인지 검사
     if (value === "") {
       setInputB('');
     } else 
-    // if (/^[1-9]\d*\.?\d{0,2}$|^0\.\d{0,2}$/.test(value)) {
-    //   // 쉼표로 숫자 형식을 구분
-    //   const parts = value.split('.');
-    //   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    //   setInputB(parts.join('.'));
-    // }
+  
     if (/^[1-9]\d*(\.\d{0,2})?$|^0\.\d{0,2}$/.test(value) || value === "") {
-      // 쉼표로 숫자 형식을 구분하여 입력
       const parts = value.split('.');
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 세 자리마다 쉼표 추가
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       setInputB(parts.join('.'));
     }
   };

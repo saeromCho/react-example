@@ -9,8 +9,9 @@ import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import CoinDescription from "@common/components/CoinDescription";
 import CoinPriceAndChangedRate from "@common/components/CoinPriceAndChangedRate";
-import BTCInput from "@common/components/BTCInput";
+import BTCInput from "@common/components/SymbolInput";
 import CurrencyInput from "@common/components/CurrencyInput";
+import LoadingDots from "@common/components/LoadingDots";
 // import arrowImage from "@static/assets/arrow.png";
 
 const CoinDetailPage = () => {
@@ -73,7 +74,7 @@ const CoinDetailPage = () => {
     <div style={{padding: '60px 60px 40px 60px'}}>
       
       
-      {queryResults.isLoading ? <div>Loading...</div> : coinData != null?
+      {queryResults.isLoading ?<LoadingDots/> : coinData != null?
       <>
           {/* 코인 이름, 드랍다운섹션 */}
           <div style={{display: 'flex', flexDirection: 'row',justifyContent: 'space-between', marginBottom: '40px'}}>
