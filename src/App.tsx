@@ -6,7 +6,7 @@ import LayoutWithGNB from "@common/components/LayoutWithGNB";
 import { Query, QueryCache, QueryClient, QueryClientProvider, QueryKey } from "@tanstack/react-query";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { GlobalProvider } from "@contexts/GlobalContext";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import ErrorPage from "@pages/error/ErrorPage";
 import ToastPop from "@common/components/ToastPop";
 
