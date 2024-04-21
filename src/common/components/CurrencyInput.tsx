@@ -1,7 +1,7 @@
-import { CurrencyInputProps } from "@common/interface/interface";
+import { ICurrencyInputProps } from "@common/interface/interface";
 import { AmountInput } from "./SymbolInput";
 
-const CurrencyInput: React.FC<CurrencyInputProps> = ({ currency, value, onChange }) => {
+const CurrencyInput: React.FC<ICurrencyInputProps> = ({ currency, value, onChange }) => {
   // const [inputB, setInputB] = useState('');
 
 

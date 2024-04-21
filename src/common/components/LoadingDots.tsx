@@ -1,12 +1,8 @@
+import { IDotProps, IPropsLoadingDotsProps } from '@common/interface/interface';
 import styled, { keyframes } from 'styled-components';
 
-
-interface DotProps {
-  delay: string;
-}
-
-const LoadingDots = () => (
-  <DotsContainer>
+const LoadingDots: React.FC<IPropsLoadingDotsProps> = ({isFitted = false}) => (
+  <DotsContainer isFitted={isFitted}>
     <Dot delay="0s" />
     <Dot delay="0.2s" />
     <Dot delay="0.4s" />
@@ -15,12 +11,20 @@ const LoadingDots = () => (
 
 export default LoadingDots;
 
+const DotsContainer = styled.div<IPropsLoadingDotsProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: ${props => props.isFitted ? '20px' : '200px'};
+`;
+
 const flash = keyframes`
   0%, 100% { opacity: 0; }
   50% { opacity: 1; }
 `;
 
-const Dot = styled.div<DotProps>`
+
+const Dot = styled.div<IDotProps>`
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -31,11 +35,4 @@ const Dot = styled.div<DotProps>`
   &:not(:last-child) {
     margin-right: 5px;
   }
-`;
-
-const DotsContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 200px;
 `;

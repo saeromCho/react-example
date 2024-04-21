@@ -85,10 +85,18 @@ export interface ISymbolInputProps {
   onChange: (value: string) => void;
 }
 
-export interface CurrencyInputProps {
+export interface ICurrencyInputProps {
   currency: string;
   value: string;
   onChange: (value: string) => void;
+}
+
+export interface IPropsLoadingDotsProps {
+  isFitted?: boolean;
+}
+
+export interface IDotProps {
+  delay: string;
 }
 
 export interface ICoinDetail {
@@ -98,15 +106,15 @@ export interface ICoinDetail {
   web_slug:                        ID;
   asset_platform_id:               null;
   platforms:                       Platforms;
-  detail_platforms:                DetailPlatforms;
+  detail_platforms:                IDetailPlatforms;
   block_time_in_minutes:           number;
   hashing_algorithm:               string;
   categories:                      string[];
   preview_listing:                 boolean;
   public_notice:                   null;
   additional_notices:              any[];
-  localization:                    Tion;
-  description:                     Tion;
+  localization:                    ITion;
+  description:                     ITion;
   links:                           Links;
   image:                           Image;
   country_origin:                  string;
@@ -116,14 +124,14 @@ export interface ICoinDetail {
   watchlist_portfolio_users:       number;
   market_cap_rank:                 number;
   market_data:                     IMarketData;
-  community_data:                  CommunityData;
-  developer_data:                  DeveloperData;
+  community_data:                  ICommunityData;
+  developer_data:                  IDeveloperData;
   status_updates:                  any[];
   last_updated:                    Date;
   tickers:                         Ticker[];
 }
 
-export interface CommunityData {
+export interface ICommunityData {
   facebook_likes:              null;
   twitter_followers:           number;
   reddit_average_posts_48h:    number;
@@ -133,7 +141,7 @@ export interface CommunityData {
   telegram_channel_user_count: null;
 }
 
-export interface Tion {
+export interface ITion {
   en:      string;
   de:      string;
   es:      string;
@@ -170,16 +178,16 @@ export interface Tion {
   sl:      string;
 }
 
-export interface DetailPlatforms {
-  "": Empty;
+export interface IDetailPlatforms {
+  "": IEmpty;
 }
 
-export interface Empty {
+export interface IEmpty {
   decimal_place:    null;
   contract_address: string;
 }
 
-export interface DeveloperData {
+export interface IDeveloperData {
   forks:                               number;
   stars:                               number;
   subscribers:                         number;
@@ -187,12 +195,12 @@ export interface DeveloperData {
   closed_issues:                       number;
   pull_requests_merged:                number;
   pull_request_contributors:           number;
-  code_additions_deletions_4_weeks:    CodeAdditionsDeletions4_Weeks;
+  code_additions_deletions_4_weeks:    ICodeAdditionsDeletions4_Weeks;
   commit_count_4_weeks:                number;
   last_4_weeks_commit_activity_series: any[];
 }
 
-export interface CodeAdditionsDeletions4_Weeks {
+export interface ICodeAdditionsDeletions4_Weeks {
   additions: number;
   deletions: number;
 }
