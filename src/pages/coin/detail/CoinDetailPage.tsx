@@ -210,7 +210,6 @@ if (queryResults.error) {
     }
   };
   
-
   return (
     <div style={{padding: '60px 60px 40px 60px'}}>
       
@@ -219,7 +218,7 @@ if (queryResults.error) {
           {/* 코인 이름, 드랍다운섹션 */}
           <div style={{display: 'flex', flexDirection: 'row',justifyContent: 'space-between', marginBottom: '40px'}}>
             <div  style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-              <BookmarkIcon isBookmarked={bookmarks.some(coin => coin.id === coinData!.id)} coin={coinData.market_data} />
+              <BookmarkIcon isBookmarked={bookmarks.some(coin => coin.id === coinData!.id)} coin={coinData} />
               <img style={{marginRight: '8px', width: '40px', height: '40px'}} src={coinData.image.large} alt="Description of Image" />
               <div style={{fontSize: '30px', fontWeight: 'bold'}}>{coinData.localization.ko} ({coinData.symbol.toLocaleUpperCase()})</div>
             </div>
