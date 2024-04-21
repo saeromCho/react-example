@@ -32,6 +32,10 @@ export interface ICoin {
   price_change_percentage_7d_in_currency: number,
 }
 
+export interface IToastProps {
+  message: string;
+}
+
 export interface IGlobalContextType {
   bookmarks: ICoin[];
   addBookmark: (coin: ICoin) => void;

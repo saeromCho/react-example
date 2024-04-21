@@ -1,4 +1,4 @@
-import { getCoin } from "@apis/coin-gecko";
+import { getCoin } from "@apis/coinGecko";
 import CoinInfoTable from "@common/components/CoinInfoTable";
 import BookmarkIcon from "@common/components/BookmarkIcon";
 import { ICoinDetail } from "@common/interface/interface";

@@ -1,5 +1,5 @@
 import { PAGING_SIZE } from "@static/constant";
-import axiosInstance from "./axios-instance";
+import axiosInstance from "./axiosInstance";
 
 export const checkPing = async () => {
   try {

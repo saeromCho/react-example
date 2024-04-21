@@ -2,39 +2,16 @@ import { IBookmarkIconProps } from "@common/interface/interface";
 import { useGlobalContext } from "@contexts/GlobalContext";
 import BookmarkIconSvg from "@lib/BookmarkIconSvg";
 import toast from "react-hot-toast";
+import ToastPop from "./ToastPop";
 
 const BookmarkIcon: React.FC<IBookmarkIconProps> = ({ isBookmarked, coin }) => {
   const { addBookmark, removeBookmark } = useGlobalContext();
 
   const notify = (isBookmarked: boolean) => {
     if(isBookmarked) {
-        toast("북마크가 해제되었습니다.", {
-          duration: 3000,
-          position: "bottom-center",
-          style: {
-            cursor: 'pointer',
-            borderRadius: '0.8rem',
-            padding: '1.6rem',
-            background: 'rgba(0,0,0,0.75)',
-            color: '#fff',
-            textAlign: 'center',
-            userSelect: 'none',
-          },
-        });
+     ToastPop("북마크가 해제되었습니다.");
     } else {
-      toast("북마크가 설정되었습니다.", {
-        duration: 3000,
-        position: "bottom-center",
-        style: {
-          cursor: 'pointer',
-          borderRadius: '0.8rem',
-          padding: '1.6rem',
-          background: 'rgba(0,0,0,0.75)',
-          color: '#fff',
-          textAlign: 'center',
-          userSelect: 'none',
-        },
-      });
+      ToastPop("북마크가 설정되었습니다.");
     }
   }
 
