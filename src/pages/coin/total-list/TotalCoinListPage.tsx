@@ -18,7 +18,7 @@ const TotalCoinListPage = () => {
   const [viewType, setViewType] = useState(ViewTypeEnum.TOTAL)
   const [currency, setCurrency] = useState(CurrencyEnum.KRW)
   const [pageSize, setPageSize] = useState(PageSizeEnum.FIFTY)
-  const [isPagination, setIsPagination] = useState(false)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [page, setPage] = useState(1)
  
   const getQueryKey = () => {
@@ -33,20 +33,18 @@ const TotalCoinListPage = () => {
     meta: {
       errorMessage: '코인 목록을 가져오는데 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.',
     },
-    refetchOnWindowFocus: false,
 })
 
-
 useEffect(() => {
-  if (queryResults.data) {
-    if(isPagination) {
-      setFetchListData(oldData => [...oldData, ...queryResults.data]) 
-      setIsPagination(false)
+  if (!queryResults.isLoading && queryResults.data) {
+    if (isLoadingMore) {
+      setFetchListData(oldData => [...oldData, ...queryResults.data])
+      setIsLoadingMore(false);  // 로딩 상태 해제
     } else {
-      setFetchListData(queryResults.data)  
+      setFetchListData(queryResults.data)
     }
   }
-}, [queryResults.data])
+}, [queryResults.isLoading, queryResults.data])
 
 
   const handleChangeViewType = (event: any) => {
@@ -59,7 +57,6 @@ useEffect(() => {
       /// TODO: 전체보기 -> 북마크 11개 -> 북마크 보기 -> 아직 pageSize 가 50이니까 11개 다 보임 -> 10개 보기로 변경 -> 북마크 리스트 10개 보임 -> 전체 보기로 변경 -> 아직 pageSize 가 10이니까 10개 보임 
       /// -> 30개 보기로 변경 -> 전체 보기여서 30개가 보여야 하는데 11개가 보이는 문제. 왜 북마크 리스트를 참조하는 거지..?
       // 페이지 네이션시 불러올 데이터만 붙여지게끔하기. 전체 렌더되면 안됨.
-      // 북마크 리스트 정렬 필요.
     } else {
       setViewType(ViewTypeEnum.BOOKMARKS)
       const sorted = sortedBookmarksByMarketCapRank(bookmarks)
@@ -97,21 +94,20 @@ useEffect(() => {
   };
 
   const handleChangePagination = () => {
-    setIsPagination(true);
+    setIsLoadingMore(true);
     setPage(prev => prev+1)
   }
 
   
-
   if (queryResults.error) {
     return <Navigate to="/error" replace />;
   }
   
   return (
     <div>
-      {queryResults.isLoading ? <LoadingDots/> : 
-        <>
-        <div style ={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', height: '40px', paddingTop: '20px', paddingBottom: '20px'}}>
+    {queryResults.isLoading && !isLoadingMore ? <LoadingDots /> :
+      <>
+           <div style ={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', height: '40px', paddingTop: '20px', paddingBottom: '20px'}}>
           <DropdownSelect value={viewType} onChange={handleChangeViewType}>
             <option value={ViewTypeEnum.TOTAL}>전체 보기</option>
             <option value={ViewTypeEnum.BOOKMARKS}>북마크 보기</option>
@@ -127,10 +123,11 @@ useEffect(() => {
           </DropdownSelect>
         </div>
         <CoinTable name={"가상자산 시세 목록"} data={viewType == ViewTypeEnum.TOTAL ? fetchListData : bookmarkedListData}  columns={getColumnsData(currency)}  noDataMessage="Sorry, No coins data available"  />
+        {!isLoadingMore && <MoreDiv onClick={handleChangePagination}>+ 더보기</MoreDiv>}
+        {isLoadingMore && <LoadingDots isFitted={true}/>}
       </>
-      }
-      {!queryResults.isLoading && viewType == ViewTypeEnum.TOTAL && (queryResults.isFetching ? <LoadingDots/>:<MoreDiv onClick={() => handleChangePagination()}>+ 더보기</MoreDiv>)}
-    </div>
+    }
+  </div>
   );
   
 };

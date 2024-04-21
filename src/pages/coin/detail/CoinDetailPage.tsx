@@ -43,18 +43,12 @@ if (queryResults.error) {
 }
 
   useEffect(() => {
-    if (queryResults.data) {
+    if (!queryResults.isLoading && queryResults.data) {
       setCoinData(queryResults.data);
     }
   }, [queryResults.data]);
 
 
-  useEffect(() => {
-    if (queryResults.error) {
-      /// TODO: 로직 필요시 추가
-      
-    }
-  }, [queryResults.error]);
   useEffect(() => {
     if (coinData) {
       setSymbolAmount("1.00000000");
