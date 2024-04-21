@@ -1,7 +1,7 @@
 import { getCoin } from "@apis/coin-gecko";
 import CoinInfoTable from "@common/components/CoinInfoTable";
 import BookmarkIcon from "@common/components/BookmarkIcon";
-import { ICoin, ICoinDetail } from "@common/interface/interface";
+import { ICoinDetail } from "@common/interface/interface";
 import { useGlobalContext } from "@contexts/GlobalContext";
 import { CurrencyEnum } from "@lib/enum";
 import { useQuery } from "@tanstack/react-query";

@@ -1,11 +1,7 @@
-import { useState } from "react";
+import { ISymbolInputProps } from "@common/interface/interface";
+import { styled } from "styled-components";
 
-interface SymbolInputProps {
-  value: string;
-  onChange: (value: string) => void; // 문자열을 받는 함수로 타입 변경
-}
-
-const SymbolInput: React.FC<SymbolInputProps> = ({ value, onChange }) => {
+const SymbolInput: React.FC<ISymbolInputProps> = ({ value, onChange }) => {
   // const [inputA, setInputA] = useState('');
 
   // const handleInputAChange = (event: any) => {
@@ -25,15 +21,20 @@ const SymbolInput: React.FC<SymbolInputProps> = ({ value, onChange }) => {
   return (
       <div>
         <div style={{marginBottom: '10px'}}>BTC</div>
-         <input
+         <AmountInput
             id="symbolInput"
             type="text"
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            style={{paddingLeft: '10px', height: '40px', width: '100%'}}
           />
       </div>
   );
 };
 
 export default SymbolInput;
+
+export const AmountInput = styled.input`
+  padding-left: 10px;
+  height: 40px;
+  width: 100%;
+`;

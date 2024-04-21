@@ -81,6 +81,16 @@ export interface ICoinPriceAndChangedRateProps {
   totalVolume24H: number | undefined;
 }
 
+export interface ISymbolInputProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+export interface CurrencyInputProps {
+  currency: string;
+  value: string;
+  onChange: (value: string) => void;
+}
 
 export interface ICoinDetail {
   id:                              ID;

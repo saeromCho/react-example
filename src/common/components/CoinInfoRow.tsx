@@ -5,7 +5,6 @@ import { styled } from "styled-components";
 const CoinInfoRow: React.FC<ICoinInfoRowProps> = ({ label, value }) => (
   <StyledRow>
     <CoinInfoRowLabel>{label}</CoinInfoRowLabel>
-    {/* TODO: 웹사이트면 링킹 걸기 */}
     <CoinInfoRowValue>{value}</CoinInfoRowValue>
   </StyledRow>
 );

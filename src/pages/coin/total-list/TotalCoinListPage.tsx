@@ -18,6 +18,7 @@ const TotalCoinListPage = () => {
   const [viewType, setViewType] = useState(ViewTypeEnum.TOTAL)
   const [currency, setCurrency] = useState(CurrencyEnum.KRW)
   const [pageSize, setPageSize] = useState(PageSizeEnum.FIFTY)
+  const [isPagination, setIsPagination] = useState(false)
   const [page, setPage] = useState(1)
  
   const getQueryKey = () => {
@@ -32,16 +33,21 @@ const TotalCoinListPage = () => {
     meta: {
       errorMessage: '코인 목록을 가져오는데 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.',
     },
-    // placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
 })
 
 
 useEffect(() => {
   if (queryResults.data) {
-console.log(queryResults.data.length);
+    if(isPagination) {
+      setFetchListData(oldData => [...oldData, ...queryResults.data])  // 기존 데이터에 추가
+      setIsPagination(false)
+    } else {
+      setFetchListData(queryResults.data)  
+    }
+console.log('하..진짜 왜 안대는거야..')
 
-    setFetchListData(queryResults.data)
+    
   }
 }, [queryResults.data])
 
@@ -104,8 +110,21 @@ useEffect(() => {
   const handleChangePagination = () => {
     // setPageSize(pageSize + pageSize)
     // setPage(page + 1)
+    setIsPagination(true);
     setPage(prev => prev+1)
-    setFetchListData(prev => prev.concat(queryResults.data))
+    // setFetchListData(oldData => [...oldData, ...queryResults.data]);  // 기존 데이터에 추가
+    
+    // queryResults.refetch();
+    // setFetchListData(oldData => [...oldData, queryResults.data.flat()]);
+    // setIsLoading(true);
+    // try {
+    //   const newData = await getCoins(currency, 'market_cap_desc', pageSize, page, 'en');
+    //   setFetchListData(oldData => [...oldData, ...newData]);
+    //   setPage(prev => prev + 1);
+    // } catch (error) {
+    //   console.error("Failed to fetch coins:", error);
+    // }
+    // setIsLoading(false);
   }
 
   
@@ -137,7 +156,7 @@ useEffect(() => {
       {queryResults.isLoading ? <LoadingDots/> : <CoinTable name={"가상자산 시세 목록"} data={viewType == ViewTypeEnum.TOTAL ? fetchListData : bookmarkedListData} 
       columns={getColumnsData(currency)} 
       noDataMessage="Sorry, No coins data available"  />}
-      {!queryResults.isLoading && viewType == ViewTypeEnum.TOTAL && <MoreDiv onClick={() => handleChangePagination()}>+ 더보기</MoreDiv>}
+      {!queryResults.isLoading && viewType == ViewTypeEnum.TOTAL && (queryResults.isFetching ? <LoadingDots/>:<MoreDiv onClick={() => handleChangePagination()}>+ 더보기</MoreDiv>)}
     </div>
   );
   

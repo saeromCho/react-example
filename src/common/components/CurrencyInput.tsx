@@ -1,11 +1,5 @@
-import { ICurrencyProps } from "@common/interface/interface";
-import { useState } from "react";
-
-interface CurrencyInputProps {
-  currency: string;
-  value: string;
-  onChange: (value: string) => void; // 문자열을 받는 함수로 타입 변경
-}
+import { CurrencyInputProps } from "@common/interface/interface";
+import { AmountInput } from "./SymbolInput";
 
 const CurrencyInput: React.FC<CurrencyInputProps> = ({ currency, value, onChange }) => {
   // const [inputB, setInputB] = useState('');
@@ -30,13 +24,11 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({ currency, value, onChange
   return (
     <div>
       <div style={{marginBottom: '10px'}}>{currency.toLocaleUpperCase()}</div>
-      {/* <label htmlFor="inputB" style={{backgroundColor: 'ghostwhite', padding: '20px 10px 20px 10px'}}>{currency}</label> */}
-        <input
+        <AmountInput
           id="currencyInput"
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          style={{paddingLeft: '10px',  height: '40px', width: '100%'}}
         />
       </div>
   );
