@@ -130,3 +130,7 @@ export const SymbolText = styled.div`
   color: grey;
   text-align: right;
 `;
+
+export const CoinName = styled.div`
+  cursor: pointer;
+`;

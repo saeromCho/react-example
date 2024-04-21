@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import {fetchCoins} from '@apis/coin-gecko';
+import {getCoins} from '@apis/coin-gecko';
 import CoinTable from "@common/components/CoinTable";
 import { getColumnsData } from "@lib/utils";
 import { useEffect, useState } from "react";
@@ -20,12 +20,12 @@ const TotalCoinListPage = () => {
   const getQueryKey = () => {
     return ['coins', viewType, currency, pageSize, page];
   };
-  const fetchData = () => {
-    return viewType === ViewTypeEnum.TOTAL ? fetchCoins(currency, 'market_cap_desc', pageSize, page,'en') : Promise.resolve(bookmarks);
+  const getData = () => {
+    return viewType === ViewTypeEnum.TOTAL ? getCoins(currency, 'market_cap_desc', pageSize, page,'en') : Promise.resolve(bookmarks);
   };
   const queryResults = useQuery({
     queryKey: getQueryKey(),
-    queryFn: fetchData,
+    queryFn: getData,
     meta: {
       errorMessage: '코인 목록을 가져오는데 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.',
     },
@@ -57,7 +57,7 @@ const TotalCoinListPage = () => {
   };
 
   const handleChangeCurrency = (event: any) => {
-    console.log(event.target.value);
+    
     if(event.target.value == CurrencyEnum.KRW) {
       setCurrency(CurrencyEnum.KRW)
       changeCurrency(CurrencyEnum.KRW)

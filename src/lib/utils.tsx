@@ -2,6 +2,7 @@ import BookmarkIcon from "@common/components/BookmarkIcon";
 import { useGlobalContext } from "@contexts/GlobalContext";
 import { CurrencyEnum } from "./enum";
 import { CurrencyText, SymbolText } from "@common/components/CoinTable";
+import CoinNameCell from "@common/components/CoinNameCell";
 
 export const getColumnsData = (currency: CurrencyEnum) => [
   {
@@ -12,7 +13,9 @@ export const getColumnsData = (currency: CurrencyEnum) => [
         <BookmarkIcon
           isBookmarked={useGlobalContext().bookmarks.some(coin => coin.id === info.row.original.id)}
           coin={info.row.original} />
-        {info.getValue()}
+        <CoinNameCell coinId={info.row.original.id}>
+          {info.getValue()}
+        </CoinNameCell>
       </div>
     ),
     size: 150,
