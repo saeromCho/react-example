@@ -79,7 +79,19 @@ if (queryResults.error) {
 
    const currentPrice = coinData?.market_data.current_price[currency] ?? 0;
    const newCurrencyAmount = parseFloat(value) * currentPrice;
-   setCurrencyAmount(newCurrencyAmount.toFixed(2));
+   const newCurrencyAmountToString = newCurrencyAmount.toString();
+   value = newCurrencyAmountToString.replace(/,/g, '');
+  
+   if (value === "") {
+     setCurrencyAmount('');
+   } else 
+ 
+   if (/^[1-9]\d*(\.\d{0,2})?$|^0\.\d{0,2}$/.test(value) || value === "") {
+     const parts = value.split('.');
+     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+     setCurrencyAmount(parts.join('.'));
+   }
+  //  setCurrencyAmount(newCurrencyAmount.toFixed(2));
   };
 
   const handleCurrencyChange = (value: string) => {
@@ -97,7 +109,16 @@ if (queryResults.error) {
 
     const currentPrice = coinData?.market_data.current_price[currency] ?? 0;
     const newSymbolAmount = parseFloat(value) / (currentPrice || 1);
-    setSymbolAmount(newSymbolAmount.toFixed(8));
+    const newSymbolAmountToString = newSymbolAmount.toString();
+    let cleanValue = newSymbolAmountToString.replace(/,/g, '').match(/^\d*\.?\d{0,8}/);
+  
+    if (cleanValue) {
+      let numericValue = cleanValue[0];
+      const parts = numericValue.split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      setSymbolAmount(parts.join('.'));
+    }
+    // setSymbolAmount(newSymbolAmount.toFixed(8));
   };
 
   return (
