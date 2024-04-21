@@ -49,4 +49,4 @@ const CoinPriceAndChangedRate: React.FC<ICoinPriceAndChangedRateProps> = ({
   )
 }
 
-export default CoinPriceAndChangedRate;
+export default CoinPriceAndChangedRate

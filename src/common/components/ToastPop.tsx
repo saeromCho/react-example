@@ -1,11 +1,18 @@
-import { IToastProps } from "@common/interface/interface";
-import toast from "react-hot-toast";
+import toast, { ToastPosition } from "react-hot-toast";
 
-const ToastPop =(message: string) => {
+const ToastPop =(message: string, duration: number, position: ToastPosition | undefined, icon: string| null, isError: boolean) => {
+  if(isError) {
+    toast.error(message, {
+      duration: duration,
+      position: position,
+      icon: icon,
+    })
+  } else {
     toast(message, {
-      duration: 3000,
-      position: "bottom-center",
-      style: {
+      duration: duration,
+      position: position,
+      style: 
+      {
         cursor: 'pointer',
         borderRadius: '0.8rem',
         padding: '1.6rem',
@@ -15,6 +22,8 @@ const ToastPop =(message: string) => {
         userSelect: 'none',
       },
     })
+  }
+    
 }
 
-export default ToastPop;
+export default ToastPop

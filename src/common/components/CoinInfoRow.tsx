@@ -9,7 +9,7 @@ const CoinInfoRow: React.FC<ICoinInfoRowProps> = ({ label, value }) => (
   </StyledRow>
 );
 
-export default CoinInfoRow;
+export default CoinInfoRow
 
 const CoinInfoRowLabel = styled.td`
   background-color: midnightblue;
@@ -19,7 +19,7 @@ const CoinInfoRowLabel = styled.td`
 `;
 
 const CoinInfoRowValue = styled.td`
-  padding: 8px; // 패딩
+  padding: 8px;
 `;
 
 const StyledRow = styled.tr`

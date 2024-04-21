@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { GlobalProvider } from "@contexts/GlobalContext";
 import toast, { Toaster } from "react-hot-toast";
 import ErrorPage from "@pages/error/ErrorPage";
+import ToastPop from "@common/components/ToastPop";
 
 const App = () => {
   const queryClient = new QueryClient({
@@ -15,17 +16,9 @@ const App = () => {
       onError: (error: Error, query: Query<unknown, unknown, unknown, QueryKey>) => {
         if (query.meta?.errorMessage) {
           const errorMessage = typeof query.meta?.errorMessage === 'string' ? query.meta.errorMessage : "An unknown error occurred";
-          toast.error(errorMessage, {
-            duration: 4000,
-            position: 'top-center',
-            icon: '🙏',
-          });
+          ToastPop(errorMessage, 4000, 'top-center', '🙏', true);
         } else {
-          toast.error("An error occurred", {
-            duration: 4000,
-            position: 'top-center',
-            icon: '🙏',
-          });
+          ToastPop("An error occurred", 4000, 'top-center', '🙏', true);
         }
       },
     }),

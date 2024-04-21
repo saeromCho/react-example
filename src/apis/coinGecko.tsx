@@ -3,11 +3,11 @@ import axiosInstance from "./axiosInstance";
 
 export const checkPing = async () => {
   try {
-    const response = await axiosInstance.get('/ping');
-    return response.data;
+    const response = await axiosInstance.get('/ping')
+    return response.data
   } catch ( error) {
-    console.error('Failed to fetch ping:', error);
-    throw error;
+    console.error('Failed to fetch ping:', error)
+    throw error
   }
 }
 
@@ -23,21 +23,21 @@ export const checkPing = async () => {
         price_change_percentage: '1h,24h,7d',
         precision: 2,
       },
-    });
-    return response.data;
+    })
+    return response.data
   } catch ( error) {
-    console.error('Failed to fetch coins:', error);
-    throw error;
+    console.error('Failed to fetch coins:', error)
+    throw error
   }
 };
 
 export const getCoin = async (id: string | undefined) => {
   try {
-    console.log(id);
-    const response = await axiosInstance.get(`/coins/${id}`);
-    return response.data;
+    console.log(id)
+    const response = await axiosInstance.get(`/coins/${id}`)
+    return response.data
   } catch ( error) {
-    console.error(`Failed to fetch coin with id ${id}:`, error);
-    throw error;
+    console.error(`Failed to fetch coin with id ${id}:`, error)
+    throw error
   }
 };

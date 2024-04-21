@@ -1,26 +1,25 @@
 import { IBookmarkIconProps } from "@common/interface/interface";
 import { useGlobalContext } from "@contexts/GlobalContext";
 import BookmarkIconSvg from "@lib/BookmarkIconSvg";
-import toast from "react-hot-toast";
 import ToastPop from "./ToastPop";
 
 const BookmarkIcon: React.FC<IBookmarkIconProps> = ({ isBookmarked, coin }) => {
-  const { addBookmark, removeBookmark } = useGlobalContext();
+  const { addBookmark, removeBookmark } = useGlobalContext()
 
   const notify = (isBookmarked: boolean) => {
     if(isBookmarked) {
-     ToastPop("북마크가 해제되었습니다.");
+     ToastPop("북마크가 해제되었습니다.", 4000, 'bottom-center', null, false)
     } else {
-      ToastPop("북마크가 설정되었습니다.");
+      ToastPop("북마크가 해제되었습니다.", 4000, 'bottom-center', null, false)
     }
   }
 
   const handleBookmarkClick = () => {
     if (isBookmarked) {
-      removeBookmark(coin.id);
+      removeBookmark(coin.id)
       
     } else {
-      addBookmark(coin);
+      addBookmark(coin)
     }
     
     notify(isBookmarked)
@@ -29,11 +28,11 @@ const BookmarkIcon: React.FC<IBookmarkIconProps> = ({ isBookmarked, coin }) => {
 
 
   return (
-<div onClick={handleBookmarkClick} style={{marginRight: '8px', cursor: 'pointer'}}>
-   <BookmarkIconSvg isBookmarked={isBookmarked}/>
-</div>
-  );
+    <div onClick={handleBookmarkClick} style={{marginRight: '8px', cursor: 'pointer'}}>
+      <BookmarkIconSvg isBookmarked={isBookmarked}/>
+    </div>
+  )
 }
   
 
-export default BookmarkIcon;
+export default BookmarkIcon
