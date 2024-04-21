@@ -117,7 +117,7 @@ function formatNumberInput(value: string, decimalPlaces: number) {
 }
 
 
-export const sortedBookmarksByMarketCapRank = (bookmarks: ICoin[]) => bookmarks.sort((a, b) => {
+export const sortBookmarksByMarketCapRank = (bookmarks: ICoin[]) => bookmarks.sort((a, b) => {
   if (!a.market_cap_rank) return 1;
   if (!b.market_cap_rank) return -1;
   return a.market_cap_rank - b.market_cap_rank;

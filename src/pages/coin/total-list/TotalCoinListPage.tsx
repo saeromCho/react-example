@@ -36,10 +36,10 @@ const TotalCoinListPage = () => {
 })
 
 useEffect(() => {
-  if (!queryResults.isLoading && queryResults.data) {
+  if (!queryResults.isLoading && queryResults.data && viewType != ViewTypeEnum.BOOKMARKS) {
     if (isLoadingMore) {
       setFetchListData(oldData => [...oldData, ...queryResults.data])
-      setIsLoadingMore(false);  // 로딩 상태 해제
+      setIsLoadingMore(false)
     } else {
       setFetchListData(queryResults.data)
     }
@@ -50,13 +50,8 @@ useEffect(() => {
   const handleChangeViewType = (event: any) => {
     if(event.target.value == ViewTypeEnum.TOTAL) {
       setViewType(ViewTypeEnum.TOTAL)
-      console.log('원래 있었던 데이터 개수' + fetchListData.length)
       const slicedList = fetchListData.slice(0, pageSize)
-      console.log('페이지개수대로 자른 개수' + slicedList.length)
       setFetchListData(slicedList)
-      /// TODO: 전체보기 -> 북마크 11개 -> 북마크 보기 -> 아직 pageSize 가 50이니까 11개 다 보임 -> 10개 보기로 변경 -> 북마크 리스트 10개 보임 -> 전체 보기로 변경 -> 아직 pageSize 가 10이니까 10개 보임 
-      /// -> 30개 보기로 변경 -> 전체 보기여서 30개가 보여야 하는데 11개가 보이는 문제. 왜 북마크 리스트를 참조하는 거지..?
-      // 페이지 네이션시 불러올 데이터만 붙여지게끔하기. 전체 렌더되면 안됨.
     } else {
       setViewType(ViewTypeEnum.BOOKMARKS)
       const sorted = sortedBookmarksByMarketCapRank(bookmarks)
@@ -82,7 +77,6 @@ useEffect(() => {
     } else if(event.target.value == PageSizeEnum.THIRTY){
       setPageSize(PageSizeEnum.THIRTY)
     } else {
-      
       setPageSize(PageSizeEnum.FIFTY)
     }
     setPage(1);
@@ -123,8 +117,8 @@ useEffect(() => {
           </DropdownSelect>
         </div>
         <CoinTable name={"가상자산 시세 목록"} data={viewType == ViewTypeEnum.TOTAL ? fetchListData : bookmarkedListData}  columns={getColumnsData(currency)}  noDataMessage="Sorry, No coins data available"  />
-        {!isLoadingMore && <MoreDiv onClick={handleChangePagination}>+ 더보기</MoreDiv>}
-        {isLoadingMore && <LoadingDots isFitted={true}/>}
+        {!isLoadingMore && viewType == ViewTypeEnum.TOTAL && <MoreDiv onClick={handleChangePagination}>+ 더보기</MoreDiv>}
+        {isLoadingMore && viewType == ViewTypeEnum.TOTAL && <LoadingDots isFitted={true}/>}
       </>
     }
   </div>

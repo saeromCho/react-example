@@ -13,6 +13,7 @@ import CurrencyInput from "@common/components/CurrencyInput";
 import LoadingDots from "@common/components/LoadingDots";
 import SymbolInput from "@common/components/SymbolInput";
 import { styled } from "styled-components";
+import ArrowIconSvg from "@lib/ArrowIconSvg";
 // import arrowImage from "@static/assets/arrow.png";
 
 const CoinDetailPage = () => {
@@ -241,7 +242,6 @@ if (queryResults.error) {
           <div style={{fontWeight: 'bold', color: 'black'}}>가격 계산</div>
           <div style={{display: 'flex', flexDirection: 'row',justifyContent: 'center', paddingTop: '16px', paddingBottom: '20px', alignItems: 'center'}}>
             <div>
-              {/* <BTCInput /> */}
               <SymbolInput value={symbolAmount} onChange={handleSymbolChange} />
           
             </div>
@@ -250,7 +250,6 @@ if (queryResults.error) {
               {/* <img src={arrowImage} alt="Logo" /> */}
             </div>
             <div>
-              {/* <CurrencyInput currency={currency == CurrencyEnum.KRW ? 'KRW' : 'USD'}/> */}
               <CurrencyInput currency={currency} value={currencyAmount} onChange={handleCurrencyChange} />
             </div>
           </div>
@@ -258,23 +257,7 @@ if (queryResults.error) {
           {/* 설명보기 섹션 */}
           <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: '20px',marginBottom: '20px', cursor: 'pointer'}}  onClick={toggleArrow}>
             <div >설명 보기</div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke={"black"}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                style={{
-                  transform: `rotate(${isDescriptionShown ? "0" : "180deg"})`,
-                  transition: 'transform 0.3s ease'
-                }}
-              >
-                <path d="M5 15l7-7 7 7"/>
-              </svg>
+             <ArrowIconSvg isDescriptionShown={isDescriptionShown}/>
           </div>
           {isDescriptionShown && (
               <CoinDescription ko={coinData.description.ko} en={coinData.description.en} />

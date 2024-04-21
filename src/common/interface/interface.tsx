@@ -99,6 +99,14 @@ export interface IDotProps {
   delay: string;
 }
 
+export interface IArrowIconSvgProps {
+  isDescriptionShown: boolean;
+}
+
+export interface IBookmarkIconSvgProps {
+  isBookmarked: boolean;
+}
+
 export interface ICoinDetail {
   id:                              ID;
   symbol:                          string;

@@ -1,6 +1,6 @@
 import CoinTable from "@common/components/CoinTable";
 import { useGlobalContext } from "@contexts/GlobalContext";
-import { getColumnsData, sortedBookmarksByMarketCapRank } from "@lib/utils";
+import { getColumnsData, sortBookmarksByMarketCapRank } from "@lib/utils";
 import { styled } from "styled-components";
 
 const BookmarkedCoinListPage = () => {
@@ -8,7 +8,7 @@ const BookmarkedCoinListPage = () => {
 
   return (
     <BookmarkedCoinListDiv>
-      <CoinTable name={"북마크 목록"} data={sortedBookmarksByMarketCapRank(bookmarks)} columns={getColumnsData(currency)} noDataMessage="No coins data available" />
+      <CoinTable name={"북마크 목록"} data={sortBookmarksByMarketCapRank(bookmarks)} columns={getColumnsData(currency)} noDataMessage="No coins data available" />
     </BookmarkedCoinListDiv>
   );
 };
