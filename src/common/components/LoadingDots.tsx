@@ -37,4 +37,5 @@ const DotsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 200px;
 `;
