@@ -67,32 +67,68 @@ if (queryResults.error) {
     setIsDescriptionShown(!isDescriptionShown)
   }
   
-  const handleSymbolChange = (value: string) => {
-    let cleanValue = value.replace(/,/g, '').match(/^\d*\.?\d{0,8}/);
+  // const handleSymbolChange = (value: string) => {
+  //   let cleanValue = value.replace(/,/g, '').match(/^\d*\.?\d{0,8}/);
   
+  //   if (cleanValue) {
+  //     let numericValue = cleanValue[0];
+  //     const parts = numericValue.split('.');
+  //     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  //     setSymbolAmount(parts.join('.'));
+  //   }
+
+  //  const currentPrice = coinData?.market_data.current_price[currency] ?? 0;
+  //  const newCurrencyAmount = parseFloat(value) * currentPrice;
+  //  const newCurrencyAmountToString = newCurrencyAmount.toString();
+  //  value = newCurrencyAmountToString.replace(/,/g, '');
+  
+  //  if (value === "") {
+  //    setCurrencyAmount('');
+  //  } else 
+ 
+  //  if (/^[1-9]\d*(\.\d{0,2})?$|^0\.\d{0,2}$/.test(value) || value === "") {
+  //    const parts = value.split('.');
+  //    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  //    setCurrencyAmount(parts.join('.'));
+  //  }
+  // //  setCurrencyAmount(newCurrencyAmount.toFixed(2));
+  // };
+  const handleSymbolChange = (value: string) => {
+    // 입력값이 비어 있는지 확인하고, 비어 있다면 관련 상태를 모두 초기화
+    if (value.trim() === "") {
+      setSymbolAmount('');
+      setCurrencyAmount('');
+      return; // 조기 반환으로 추가 로직 실행 방지
+    }
+  
+    // 입력값에서 콤마를 제거하고 숫자만 추출
+    let cleanValue = value.replace(/,/g, '').match(/^\d*\.?\d{0,8}/);
+    
     if (cleanValue) {
       let numericValue = cleanValue[0];
       const parts = numericValue.split('.');
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      setSymbolAmount(parts.join('.'));
+      setSymbolAmount(parts.join('.')); // 형식화된 값을 symbol amount로 설정
     }
-
-   const currentPrice = coinData?.market_data.current_price[currency] ?? 0;
-   const newCurrencyAmount = parseFloat(value) * currentPrice;
-   const newCurrencyAmountToString = newCurrencyAmount.toString();
-   value = newCurrencyAmountToString.replace(/,/g, '');
   
-   if (value === "") {
-     setCurrencyAmount('');
-   } else 
- 
-   if (/^[1-9]\d*(\.\d{0,2})?$|^0\.\d{0,2}$/.test(value) || value === "") {
-     const parts = value.split('.');
-     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-     setCurrencyAmount(parts.join('.'));
-   }
-  //  setCurrencyAmount(newCurrencyAmount.toFixed(2));
+    // 현재 가격을 가져오고 계산
+    const currentPrice = coinData?.market_data.current_price[currency] ?? 0;
+    const newCurrencyAmount = parseFloat(value.replace(/,/g, '')) * currentPrice;
+  
+    // 계산된 값을 문자열로 변환하고 형식화
+    const newCurrencyAmountToString = newCurrencyAmount.toString();
+    let formattedCurrencyValue = newCurrencyAmountToString.replace(/,/g, '');
+  
+    // 계산된 값에 대한 형식화 진행
+    if (/^[1-9]\d*(\.\d{0,2})?$|^0\.\d{0,2}$/.test(formattedCurrencyValue)) {
+      const parts = formattedCurrencyValue.split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      setCurrencyAmount(parts.join('.')); // 형식화된 값을 currency amount로 설정
+    } else {
+      setCurrencyAmount(formattedCurrencyValue); // 유효하지 않은 형식이면 원래 값을 그대로 사용
+    }
   };
+  
 
   const handleCurrencyChange = (value: string) => {
     value = value.replace(/,/g, '');
@@ -110,13 +146,20 @@ if (queryResults.error) {
     const currentPrice = coinData?.market_data.current_price[currency] ?? 0;
     const newSymbolAmount = parseFloat(value) / (currentPrice || 1);
     const newSymbolAmountToString = newSymbolAmount.toString();
-    let cleanValue = newSymbolAmountToString.replace(/,/g, '').match(/^\d*\.?\d{0,8}/);
+    if (newSymbolAmountToString.trim() === "") {
+      setSymbolAmount('');
+      setCurrencyAmount('');
+      return; // 조기 반환으로 추가 로직 실행 방지
+    }
   
+    // 입력값에서 콤마를 제거하고 숫자만 추출
+    let cleanValue = newSymbolAmountToString.replace(/,/g, '').match(/^\d*\.?\d{0,8}/);
+    
     if (cleanValue) {
       let numericValue = cleanValue[0];
       const parts = numericValue.split('.');
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      setSymbolAmount(parts.join('.'));
+      setSymbolAmount(parts.join('.')); // 형식화된 값을 symbol amount로 설정
     }
     // setSymbolAmount(newSymbolAmount.toFixed(8));
   };
