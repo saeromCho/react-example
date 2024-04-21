@@ -32,7 +32,11 @@ const TotalCoinListPage = () => {
       errorMessage: '코인 목록을 가져오는데 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.',
     },
     refetchOnWindowFocus: false,
-})
+  })
+
+  if (queryResults.error) {
+    return <Navigate to="/error" replace />;
+  }
 
   useEffect(() => {
     if (queryResults.data) {
@@ -53,8 +57,8 @@ const TotalCoinListPage = () => {
   useEffect(() => {
     console.log('변경되어야함'+pageSize)
   }, [bookmarkedListData])
-  
-  
+
+
   const handleChangeViewType = (event: any) => {
     if(event.target.value == ViewTypeEnum.TOTAL) {
       setViewType(ViewTypeEnum.TOTAL)
@@ -102,9 +106,6 @@ const TotalCoinListPage = () => {
   }
 
 
-  if (queryResults.error) {
-    return <Navigate to="/error" replace />;
-  }
   
   return (
     <div>

@@ -9,9 +9,9 @@ import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import CoinDescription from "@common/components/CoinDescription";
 import CoinPriceAndChangedRate from "@common/components/CoinPriceAndChangedRate";
-import BTCInput from "@common/components/SymbolInput";
 import CurrencyInput from "@common/components/CurrencyInput";
 import LoadingDots from "@common/components/LoadingDots";
+import SymbolInput from "@common/components/SymbolInput";
 // import arrowImage from "@static/assets/arrow.png";
 
 const CoinDetailPage = () => {
@@ -20,6 +20,8 @@ const CoinDetailPage = () => {
   const [coinData, setCoinData] = useState<ICoinDetail | null>(null);
   const [currency, setCurrency] = useState<CurrencyEnum>(CurrencyEnum.KRW);
   const [isDescriptionShown, setIsDescriptionShown] = useState(false);
+  const [symbolAmount, setSymbolAmount] = useState('');
+  const [currencyAmount, setCurrencyAmount] = useState('');
 
   const getQueryKey = () => {
     return ['coins', id];
@@ -35,6 +37,9 @@ const CoinDetailPage = () => {
     },
     refetchOnWindowFocus: false,
 });
+if (queryResults.error) {
+  return <Navigate to="/error" replace />;
+}
 
   useEffect(() => {
     if (queryResults.data) {
@@ -42,8 +47,6 @@ const CoinDetailPage = () => {
     }
   }, [queryResults.data]);
 
-
-  console.log('후...'+queryResults.data);
 
   useEffect(() => {
     if (queryResults.error) {
@@ -64,15 +67,41 @@ const CoinDetailPage = () => {
     setIsDescriptionShown(!isDescriptionShown)
   }
   
-  if (queryResults.error) {
-    return <Navigate to="/error" replace />;
-  }
+  const handleSymbolChange = (value: string) => {
+    let cleanValue = value.replace(/,/g, '').match(/^\d*\.?\d{0,8}/);
   
-  console.log(coinData?.links.homepage.at(0))
-  console.log(coinData?.market_cap_rank);
+    if (cleanValue) {
+      let numericValue = cleanValue[0];
+      const parts = numericValue.split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      setSymbolAmount(parts.join('.'));
+    }
+
+   const currentPrice = coinData?.market_data.current_price[currency] ?? 0;
+   const newCurrencyAmount = parseFloat(value) * currentPrice;
+   setCurrencyAmount(newCurrencyAmount.toFixed(2));
+  };
+
+  const handleCurrencyChange = (value: string) => {
+    value = value.replace(/,/g, '');
+  
+    if (value === "") {
+      setCurrencyAmount('');
+    } else 
+  
+    if (/^[1-9]\d*(\.\d{0,2})?$|^0\.\d{0,2}$/.test(value) || value === "") {
+      const parts = value.split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      setCurrencyAmount(parts.join('.'));
+    }
+
+    const currentPrice = coinData?.market_data.current_price[currency] ?? 0;
+    const newSymbolAmount = parseFloat(value) / (currentPrice || 1);
+    setSymbolAmount(newSymbolAmount.toFixed(8));
+  };
+
   return (
     <div style={{padding: '60px 60px 40px 60px'}}>
-      
       
       {queryResults.isLoading ?<LoadingDots/> : coinData != null?
       <>
@@ -107,14 +136,17 @@ const CoinDetailPage = () => {
           <div style={{fontWeight: 'bold'}}>가격 계산</div>
           <div style={{display: 'flex', flexDirection: 'row',justifyContent: 'space-between', padding: '40px 60px', alignItems: 'center'}}>
             <div>
-              <BTCInput />
+              {/* <BTCInput /> */}
+              <SymbolInput value={symbolAmount} onChange={handleSymbolChange} />
+          
             </div>
             <div>
               화살표
               {/* <img src={arrowImage} alt="Logo" /> */}
             </div>
             <div>
-              <CurrencyInput currency={currency == CurrencyEnum.KRW ? 'KRW' : 'USD'}/>
+              {/* <CurrencyInput currency={currency == CurrencyEnum.KRW ? 'KRW' : 'USD'}/> */}
+              <CurrencyInput currency={currency} value={currencyAmount} onChange={handleCurrencyChange} />
             </div>
           </div>
           </div>

@@ -91,3 +91,16 @@ export const formatNumber = (value: number, hasDecimal = true) => {
   });
   return formatter.format(value);
 }
+
+export const formatNumberInput = (value: string, decimalPlaces: number) => {
+  const regex = new RegExp(`^\\d*\\.?\\d{0,${decimalPlaces}}$`);
+  let cleanValue = value.replace(/,/g, '').match(regex);
+
+  if (cleanValue) {
+    let numericValue = cleanValue[0]; // 첫 번째 매치 결과 사용
+    const parts = numericValue.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.join('.');
+  }
+  return ''; // 유효하지 않은 입력의 경우 빈 문자열 반환
+}

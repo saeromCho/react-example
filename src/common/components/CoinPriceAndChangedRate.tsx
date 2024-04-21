@@ -10,14 +10,7 @@ const CoinPriceAndChangedRate: React.FC<ICoinPriceAndChangedRateProps> = ({
   changedRate24H,
   marketCap,
   totalVolume24H}) => {
-    console.log(currency);
-    console.log(currentPrice);
-    console.log(changedRate24HByCurrency);
-  
-    console.log( symbol)
-    console.log(changedRate24H);
-    console.log(marketCap);
-    console.log(totalVolume24H);
+   
   return (
     <div style={{textAlign: 'right', width: '50%'}}>
       <div style={{marginBottom: '20px'}}>

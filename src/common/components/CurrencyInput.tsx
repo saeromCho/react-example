@@ -1,38 +1,42 @@
 import { ICurrencyProps } from "@common/interface/interface";
 import { useState } from "react";
 
-const CurrencyInput: React.FC<ICurrencyProps> = ({currency}) => {
-  const [inputB, setInputB] = useState('');
+interface CurrencyInputProps {
+  currency: string;
+  value: string;
+  onChange: (value: string) => void; // 문자열을 받는 함수로 타입 변경
+}
+
+const CurrencyInput: React.FC<CurrencyInputProps> = ({ currency, value, onChange }) => {
+  // const [inputB, setInputB] = useState('');
 
 
-  const handleInputBChange = (event: any) => {
-    let { value } = event.target;
-    value = value.replace(/,/g, '');
+  // const handleInputBChange = (event: any) => {
+    // let { value } = event.target;
+    // value = value.replace(/,/g, '');
   
-    if (value === "") {
-      setInputB('');
-    } else 
+    // if (value === "") {
+    //   setInputB('');
+    // } else 
   
-    if (/^[1-9]\d*(\.\d{0,2})?$|^0\.\d{0,2}$/.test(value) || value === "") {
-      const parts = value.split('.');
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      setInputB(parts.join('.'));
-    }
-  };
+    // if (/^[1-9]\d*(\.\d{0,2})?$|^0\.\d{0,2}$/.test(value) || value === "") {
+    //   const parts = value.split('.');
+    //   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    //   setInputB(parts.join('.'));
+    // }
+  // };
   
 
   return (
     <div>
       <div>
-        <label htmlFor="inputB" style={{backgroundColor: 'ghostwhite',
-    padding: '20px 10px 20px 10px'}}>{currency}</label>
+        <label htmlFor="inputB" style={{backgroundColor: 'ghostwhite', padding: '20px 10px 20px 10px'}}>{currency}</label>
         <input
-          id="inputB"
+          id="currencyInput"
           type="text"
-          value={inputB}
-          onChange={handleInputBChange}
-          style={{paddingLeft: '10px',
-          height: '57px'}}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          style={{paddingLeft: '10px', height: '57px'}}
         />
       </div>
     </div>
