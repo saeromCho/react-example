@@ -10,19 +10,19 @@ import { Navigate } from "react-router-dom";
 
 
 const TotalCoinListPage = () => {
-  const { bookmarks, changeCurrency } = useGlobalContext();
-  const [fetchListData, setFetchListData] = useState<ICoin[]>([]);
-  const [bookmarkedListData, setBookmarkedListData] = useState<ICoin[]>([]);
-  const [viewType, setViewType] = useState(ViewTypeEnum.TOTAL);
-  const [currency, setCurrency] = useState(CurrencyEnum.KRW);
-  const [pageSize, setPageSize] = useState(PageSizeEnum.FIFTY);
-  const [page, setPage] = useState(1);
+  const { bookmarks, changeCurrency } = useGlobalContext()
+  const [fetchListData, setFetchListData] = useState<ICoin[]>([])
+  const [bookmarkedListData, setBookmarkedListData] = useState<ICoin[]>([])
+  const [viewType, setViewType] = useState(ViewTypeEnum.TOTAL)
+  const [currency, setCurrency] = useState(CurrencyEnum.KRW)
+  const [pageSize, setPageSize] = useState(PageSizeEnum.FIFTY)
+  const [page, setPage] = useState(1)
  
   const getQueryKey = () => {
-    return ['coins', currency, pageSize, page];
+    return ['coins', currency, pageSize, page]
   };
   const getData = () => {
-    return viewType === ViewTypeEnum.TOTAL ? getCoins(currency, 'market_cap_desc', pageSize, page,'en') : Promise.resolve(bookmarks);
+    return viewType === ViewTypeEnum.TOTAL ? getCoins(currency, 'market_cap_desc', pageSize, page,'en') : Promise.resolve(bookmarks)
   };
   const queryResults = useQuery({
     queryKey: getQueryKey(),
@@ -31,13 +31,13 @@ const TotalCoinListPage = () => {
       errorMessage: '코인 목록을 가져오는데 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.',
     },
     refetchOnWindowFocus: false,
-});
+})
 
   useEffect(() => {
     if (queryResults.data) {
-      setFetchListData(queryResults.data);
+      setFetchListData(queryResults.data)
     }
-  }, [queryResults.data]);
+  }, [queryResults.data])
 
 
 
@@ -46,14 +46,24 @@ const TotalCoinListPage = () => {
       /// TODO: 로직 필요시 추가
       
     }
-  }, [queryResults.error]);
+  }, [queryResults.error])
+
+
+  useEffect(() => {
+    console.log('변경되어야함'+pageSize)
+  }, [bookmarkedListData])
+  
   
   const handleChangeViewType = (event: any) => {
     if(event.target.value == ViewTypeEnum.TOTAL) {
       setViewType(ViewTypeEnum.TOTAL)
+      const slicedList = fetchListData.slice(0, pageSize)
+      setFetchListData(slicedList)
+      /// TODO: 전체보기 -> 북마크 11개 -> 북마크 보기 -> 아직 pageSize 가 50이니까 11개 다 보임 -> 10개 보기로 변경 -> 북마크 리스트 10개 보임 -> 전체 보기로 변경 -> 아직 pageSize 가 10이니까 10개 보임 
+      /// -> 30개 보기로 변경 -> 전체 보기여서 30개가 보여야 하는데 11개가 보이는 문제.
     } else {
       setViewType(ViewTypeEnum.BOOKMARKS)
-      setBookmarkedListData(bookmarks);
+      setBookmarkedListData(bookmarks)
     }
   };
 
@@ -66,7 +76,7 @@ const TotalCoinListPage = () => {
       setCurrency(CurrencyEnum.USD)
       changeCurrency(CurrencyEnum.USD)
     }
-    setPage(1);
+    setPage(1)
   };
 
   const handleChangePageSize = (event: any) => {
@@ -75,14 +85,19 @@ const TotalCoinListPage = () => {
     } else if(event.target.value == PageSizeEnum.THIRTY){
       setPageSize(PageSizeEnum.THIRTY)
     } else {
+      
       setPageSize(PageSizeEnum.FIFTY)
     }
     setPage(1);
+    if(viewType == ViewTypeEnum.BOOKMARKS) {
+      const slicedList = bookmarks.slice(0, event.target.value);
+      setBookmarkedListData(slicedList)
+    }
   };
 
   const handleChangePagination = () => {
-    setPageSize(pageSize + pageSize);
-    setPage(page + 1);
+    setPageSize(pageSize + pageSize)
+    setPage(page + 1)
   }
 
 
