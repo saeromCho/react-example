@@ -23,18 +23,16 @@ const SymbolInput: React.FC<SymbolInputProps> = ({ value, onChange }) => {
   
 
   return (
-    <div>
       <div>
-        <label htmlFor="inputA" style={{backgroundColor: 'ghostwhite', padding: '20px 10px 20px 10px'}}>BTC</label>
+        <div style={{marginBottom: '10px'}}>BTC</div>
          <input
             id="symbolInput"
             type="text"
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            style={{paddingLeft: '10px', height: '57px'}}
+            style={{paddingLeft: '10px', height: '40px', width: '100%'}}
           />
       </div>
-    </div>
   );
 };
 

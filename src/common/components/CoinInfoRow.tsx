@@ -13,10 +13,10 @@ const CoinInfoRow: React.FC<ICoinInfoRowProps> = ({ label, value }) => (
 export default CoinInfoRow;
 
 const CoinInfoRowLabel = styled.td`
-  background-color: antiquewhite;
-  color: #333; // 텍스트 색상 지정
-  font-weight: bold; // 폰트 굵기
-  padding: 8px; // 패딩
+  background-color: midnightblue;
+  color: white;
+  padding: 18px;
+  font-size: 15px;
 `;
 
 const CoinInfoRowValue = styled.td`
@@ -25,7 +25,7 @@ const CoinInfoRowValue = styled.td`
 
 const StyledRow = styled.tr`
   &:not(:last-child) td {
-    border-bottom: 1px solid #eaeaea; // 행의 아래쪽에 테두리 적용
-    width: 34px;
+    border-bottom: 1px solid lightgrey;
+    width: 30px;
   }
 `;

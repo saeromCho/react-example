@@ -29,17 +29,16 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({ currency, value, onChange
 
   return (
     <div>
-      <div>
-        <label htmlFor="inputB" style={{backgroundColor: 'ghostwhite', padding: '20px 10px 20px 10px'}}>{currency}</label>
+      <div style={{marginBottom: '10px'}}>{currency.toLocaleUpperCase()}</div>
+      {/* <label htmlFor="inputB" style={{backgroundColor: 'ghostwhite', padding: '20px 10px 20px 10px'}}>{currency}</label> */}
         <input
           id="currencyInput"
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          style={{paddingLeft: '10px', height: '57px'}}
+          style={{paddingLeft: '10px',  height: '40px', width: '100%'}}
         />
       </div>
-    </div>
   );
 };
 

@@ -12,6 +12,7 @@ import CoinPriceAndChangedRate from "@common/components/CoinPriceAndChangedRate"
 import CurrencyInput from "@common/components/CurrencyInput";
 import LoadingDots from "@common/components/LoadingDots";
 import SymbolInput from "@common/components/SymbolInput";
+import { styled } from "styled-components";
 // import arrowImage from "@static/assets/arrow.png";
 
 const CoinDetailPage = () => {
@@ -216,19 +217,19 @@ if (queryResults.error) {
       {queryResults.isLoading ?<LoadingDots/> : coinData != null?
       <>
           {/* 코인 이름, 드랍다운섹션 */}
-          <div style={{display: 'flex', flexDirection: 'row',justifyContent: 'space-between', marginBottom: '40px'}}>
+          <div style={{display: 'flex', flexDirection: 'row',justifyContent: 'space-between', marginBottom: '40px', alignItems: 'center'}}>
             <div  style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
               <BookmarkIcon isBookmarked={bookmarks.some(coin => coin.id === coinData!.id)} coin={coinData} />
               <img style={{marginRight: '8px', width: '40px', height: '40px'}} src={coinData.image.large} alt="Description of Image" />
               <div style={{fontSize: '30px', fontWeight: 'bold'}}>{coinData.localization.ko} ({coinData.symbol.toLocaleUpperCase()})</div>
             </div>
-            <select value={currency} onChange={handleChangeCurrency}>
+            <CurrencySelect value={currency} onChange={handleChangeCurrency}>
               <option value={CurrencyEnum.KRW}>KRW 보기</option>
               <option value={CurrencyEnum.USD}>USD 보기</option>
-            </select>
+            </CurrencySelect>
           </div>
           {/* 시가총액, 웹사이트 // 가격, 상승량 등등 섹션 */}
-          <div style={{display: 'flex', flexDirection: 'row',justifyContent: 'space-between', marginBottom: '50px'}}>
+          <div style={{display: 'flex', flexDirection: 'row',justifyContent: 'space-between', marginBottom: '50px', alignItems: 'flex-end'}}>
             <CoinInfoTable marketCapRank={coinData.market_cap_rank} websiteUrl={coinData.links.homepage.at(0)}  />
             <CoinPriceAndChangedRate 
                 currency={currency}
@@ -242,15 +243,15 @@ if (queryResults.error) {
           </div>
           
           {/* 가격 계산 섹션 */}
-          <div style={{flexDirection: 'row', justifyContent: 'space-between', border: '1px solid lightgrey', padding: '20px', backgroundColor: 'pink'}}>
-          <div style={{fontWeight: 'bold'}}>가격 계산</div>
-          <div style={{display: 'flex', flexDirection: 'row',justifyContent: 'space-between', padding: '40px 60px', alignItems: 'center'}}>
+          <div style={{padding: '20px', backgroundColor: 'whitesmoke'}}>
+          <div style={{fontWeight: 'bold', color: 'black'}}>가격 계산</div>
+          <div style={{display: 'flex', flexDirection: 'row',justifyContent: 'center', paddingTop: '16px', paddingBottom: '20px', alignItems: 'center'}}>
             <div>
               {/* <BTCInput /> */}
               <SymbolInput value={symbolAmount} onChange={handleSymbolChange} />
           
             </div>
-            <div>
+            <div style={{marginLeft: '40px', marginRight: '40px'}}>
               화살표
               {/* <img src={arrowImage} alt="Logo" /> */}
             </div>
@@ -294,3 +295,9 @@ if (queryResults.error) {
 };
 
 export default CoinDetailPage;
+
+const CurrencySelect = styled.select`
+height: 40px;
+border: none;
+cursor: pointer;
+`;

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import {getCoins} from '@apis/coin-gecko';
 import CoinTable from "@common/components/CoinTable";
 import { getColumnsData } from "@lib/utils";
@@ -8,6 +8,7 @@ import { useGlobalContext } from "@contexts/GlobalContext";
 import { CurrencyEnum, PageSizeEnum, ViewTypeEnum } from "@lib/enum";
 import { Navigate } from "react-router-dom";
 import LoadingDots from "@common/components/LoadingDots";
+import { styled } from "styled-components";
 
 
 const TotalCoinListPage = () => {
@@ -31,12 +32,15 @@ const TotalCoinListPage = () => {
     meta: {
       errorMessage: '코인 목록을 가져오는데 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.',
     },
+    // placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
 })
 
 
 useEffect(() => {
   if (queryResults.data) {
+console.log(queryResults.data.length);
+
     setFetchListData(queryResults.data)
   }
 }, [queryResults.data])
@@ -98,10 +102,13 @@ useEffect(() => {
   };
 
   const handleChangePagination = () => {
-    setPageSize(pageSize + pageSize)
-    setPage(page + 1)
+    // setPageSize(pageSize + pageSize)
+    // setPage(page + 1)
+    setPage(prev => prev+1)
+    setFetchListData(prev => prev.concat(queryResults.data))
   }
 
+  
 
   if (queryResults.error) {
     return <Navigate to="/error" replace />;
@@ -109,26 +116,48 @@ useEffect(() => {
   
   return (
     <div>
-    <div>
-       <select value={viewType} onChange={handleChangeViewType}>
+    <div style ={{    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    height: '40px', paddingTop: '20px', paddingBottom: '20px'}}>
+       <DropdownSelect value={viewType} onChange={handleChangeViewType}>
         <option value={ViewTypeEnum.TOTAL}>전체 보기</option>
         <option value={ViewTypeEnum.BOOKMARKS}>북마크 보기</option>
-      </select>
-       <select value={currency} onChange={handleChangeCurrency}>
+      </DropdownSelect>
+       <DropdownSelect value={currency} onChange={handleChangeCurrency}>
         <option value={CurrencyEnum.KRW}>KRW 보기</option>
         <option value={CurrencyEnum.USD}>USD 보기</option>
-      </select>
-      <select value={pageSize} onChange={handleChangePageSize}>
+      </DropdownSelect>
+      <DropdownSelect value={pageSize} onChange={handleChangePageSize}>
         <option value={PageSizeEnum.TEN}>10개 보기</option>
         <option value={PageSizeEnum.THIRTY}>30개 보기</option>
         <option value={PageSizeEnum.FIFTY}>50개 보기</option>
-      </select>
+      </DropdownSelect>
       </div>
-      {queryResults.isLoading ? <LoadingDots/> : <CoinTable name={"가상자산 시세 목록"} data={viewType == ViewTypeEnum.TOTAL ? fetchListData : bookmarkedListData} columns={getColumnsData(currency)} noDataMessage="No coins data available"  />}
-      {!queryResults.isLoading && viewType == ViewTypeEnum.TOTAL && <div onClick={() => handleChangePagination()}>+ 더보기</div>}
+      {queryResults.isLoading ? <LoadingDots/> : <CoinTable name={"가상자산 시세 목록"} data={viewType == ViewTypeEnum.TOTAL ? fetchListData : bookmarkedListData} 
+      columns={getColumnsData(currency)} 
+      noDataMessage="Sorry, No coins data available"  />}
+      {!queryResults.isLoading && viewType == ViewTypeEnum.TOTAL && <MoreDiv onClick={() => handleChangePagination()}>+ 더보기</MoreDiv>}
     </div>
   );
   
 };
 
 export default TotalCoinListPage;
+
+const DropdownSelect = styled.select`
+margin-left: 20px;
+height: 40px;
+border: none;
+curosor: pointer;
+`;
+
+const MoreDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  margin-top: 20px;
+  cursor: pointer;
+`;

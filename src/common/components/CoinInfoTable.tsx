@@ -4,8 +4,7 @@ import { styled } from "styled-components";
 
 
 const CoinInfoTable: React.FC<ICoinInfoTableProps> = ({marketCapRank, websiteUrl}) => {
-  console.log('랭크' + marketCapRank);
-  console.log('사이ㅡ' + websiteUrl);
+
   return (
     <StyledTable>
       <tbody>

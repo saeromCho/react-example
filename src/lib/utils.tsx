@@ -18,17 +18,17 @@ export const getColumnsData = (currency: CurrencyEnum) => [
         </CoinNameCell>
       </div>
     ),
-    size: 150,
+    size: 220,
   },
   {
     accessorKey: 'symbol',
     header: '',
     cell: (info: any) => (
       <SymbolText >
-        {info.getValue()}
+        {info.getValue().toLocaleUpperCase()}
       </SymbolText>
     ),
-    size: 100,
+    size: 50,
   },
   {
     accessorKey: 'current_price',
@@ -92,15 +92,25 @@ export const formatNumber = (value: number, hasDecimal = true) => {
   return formatter.format(value);
 }
 
-export const formatNumberInput = (value: string, decimalPlaces: number) => {
-  const regex = new RegExp(`^\\d*\\.?\\d{0,${decimalPlaces}}$`);
-  let cleanValue = value.replace(/,/g, '').match(regex);
+// export const formatNumberInput = (value: string, decimalPlaces: number) => {
+//   const regex = new RegExp(`^\\d*\\.?\\d{0,${decimalPlaces}}$`);
+//   let cleanValue = value.replace(/,/g, '').match(regex);
 
+//   if (cleanValue) {
+//     let numericValue = cleanValue[0]; // 첫 번째 매치 결과 사용
+//     const parts = numericValue.split('.');
+//     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+//     return parts.join('.');
+//   }
+//   return ''; // 유효하지 않은 입력의 경우 빈 문자열 반환
+// }
+function formatNumberInput(value: string, decimalPlaces: number) {
+  let cleanValue = value.replace(/,/g, '').match(new RegExp(`^\\d*\\.?\\d{0,${decimalPlaces}}$`));
   if (cleanValue) {
-    let numericValue = cleanValue[0]; // 첫 번째 매치 결과 사용
+      let numericValue = cleanValue[0]; // 첫 번째 매치 결과 사용
     const parts = numericValue.split('.');
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    parts[0] = parts[0].replace(/\B(?=(\\d{3})+(?!\\d))/g, ',');
     return parts.join('.');
   }
-  return ''; // 유효하지 않은 입력의 경우 빈 문자열 반환
+  return value; // 유효하지 않은 경우 이전 값 반환
 }
