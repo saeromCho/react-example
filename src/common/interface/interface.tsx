@@ -62,8 +62,20 @@ export interface IInfoTableProps {
     data: ICoinInfoRowProps[];
 }
 
-export interface ICurrencyProps {
+export interface ISymbolInputProps {
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export interface ICurrencyInputProps {
   currency: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export interface ICurrencyConverterProps {
+  // currentPrice: number;
+  currentPrice: { [key in CurrencyEnum]?: number;};
 }
 
 export interface ICoinInfoTableProps {

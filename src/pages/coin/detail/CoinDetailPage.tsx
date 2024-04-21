@@ -12,6 +12,7 @@ import CoinPriceAndChangedRate from "@common/components/CoinPriceAndChangedRate"
 import BTCInput from "@common/components/SymbolInput";
 import CurrencyInput from "@common/components/CurrencyInput";
 import LoadingDots from "@common/components/LoadingDots";
+import CurrencyConverter from "@common/components/CurrencyConverter";
 // import arrowImage from "@static/assets/arrow.png";
 
 const CoinDetailPage = () => {
@@ -52,7 +53,7 @@ const CoinDetailPage = () => {
     }
   }, [queryResults.error]);
 
-  const handleChangeCurrency = (event: any) => {
+  const handleChangeCurrency = (event: React.ChangeEvent<HTMLInputElement>) => {
     
     if(event.target.value == CurrencyEnum.KRW) {
       setCurrency(CurrencyEnum.KRW)
@@ -106,16 +107,17 @@ const CoinDetailPage = () => {
           <div style={{flexDirection: 'row', justifyContent: 'space-between', border: '1px solid lightgrey', padding: '20px', backgroundColor: 'pink'}}>
           <div style={{fontWeight: 'bold'}}>가격 계산</div>
           <div style={{display: 'flex', flexDirection: 'row',justifyContent: 'space-between', padding: '40px 60px', alignItems: 'center'}}>
-            <div>
+            <CurrencyConverter currentPrice={coinData.market_data.current_price[currency]} />
+            {/* <div>
               <BTCInput />
-            </div>
-            <div>
-              화살표
+            </div> */}
               {/* <img src={arrowImage} alt="Logo" /> */}
-            </div>
-            <div>
+            {/* <div>
+              화살표
+            </div> */}
+            {/* <div>
               <CurrencyInput currency={currency == CurrencyEnum.KRW ? 'KRW' : 'USD'}/>
-            </div>
+            </div> */}
           </div>
           </div>
           {/* 설명보기 섹션 */}
