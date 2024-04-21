@@ -42,12 +42,12 @@ const CoinPriceAndChangedRate: React.FC<ICoinPriceAndChangedRateProps> = ({
           <div style={{marginLeft: '20px',fontSize: '12px', color: changedRate24H != null ? changedRate24H >= 0 ? changedRate24H == 0 ? 'black' : 'red': 'blue':'black'}}>{changedRate24H != null ? formatNumber(changedRate24H):'-'}%</div>
         </div>
       </div>
-      <div style={{display: 'flex',flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '100px'}}>
+      <div style={{display: 'flex',flexDirection: 'row', justifyContent: 'flex-end', paddingLeft: '100px'}}>
         <div >
           <div style={{fontSize: '12px', marginBottom: '6px'}}>시가 총액</div>
           <div style={{fontSize: '12px'}}>{currency === CurrencyEnum.KRW ? '₩' : '$'}{marketCap !== undefined && formatNumber(marketCap)}</div>
         </div>
-        <div>
+        <div style={{marginLeft: '100px'}}>
           <div style={{fontSize: '12px',     marginBottom: '6px'}}>24시간 거래 대금</div>
           <div style={{fontSize: '12px'}}>{currency === CurrencyEnum.KRW ? '₩' : '$'}{totalVolume24H !== undefined && formatNumber(totalVolume24H)}</div>
         </div>
