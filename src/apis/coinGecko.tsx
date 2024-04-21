@@ -33,7 +33,6 @@ export const checkPing = async () => {
 
 export const getCoin = async (id: string | undefined) => {
   try {
-    console.log(id)
     const response = await axiosInstance.get(`/coins/${id}`)
     return response.data
   } catch ( error) {
