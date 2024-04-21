@@ -3,6 +3,7 @@ import { useGlobalContext } from "@contexts/GlobalContext";
 import { CurrencyEnum } from "./enum";
 import { CurrencyText, SymbolText } from "@common/components/CoinTable";
 import CoinNameCell from "@common/components/CoinNameCell";
+import { ICoin } from "@common/interface/interface";
 
 export const getColumnsData = (currency: CurrencyEnum) => [
   {
@@ -18,7 +19,7 @@ export const getColumnsData = (currency: CurrencyEnum) => [
         </CoinNameCell>
       </div>
     ),
-    size: 220,
+    size: 250,
   },
   {
     accessorKey: 'symbol',
@@ -28,7 +29,7 @@ export const getColumnsData = (currency: CurrencyEnum) => [
         {info.getValue().toLocaleUpperCase()}
       </SymbolText>
     ),
-    size: 50,
+    size: 100,
   },
   {
     accessorKey: 'current_price',
@@ -38,7 +39,7 @@ export const getColumnsData = (currency: CurrencyEnum) => [
         {currency === CurrencyEnum.KRW ? '₩' : '$'}{formatNumber(info.getValue())}
       </CurrencyText>
     ),
-    size: 300,
+    size: 200,
   },
   {
     accessorKey: 'price_change_percentage_1h_in_currency',
@@ -68,7 +69,7 @@ export const getColumnsData = (currency: CurrencyEnum) => [
         {formatNumber(info.getValue())}%
       </CurrencyText>
     ),
-    size: 200,
+    size: 250,
   },
   {
     accessorKey: 'total_volume',
@@ -114,3 +115,10 @@ function formatNumberInput(value: string, decimalPlaces: number) {
   }
   return value; // 유효하지 않은 경우 이전 값 반환
 }
+
+
+export const sortedBookmarksByMarketCapRank = (bookmarks: ICoin[]) => bookmarks.sort((a, b) => {
+  if (!a.market_cap_rank) return 1;
+  if (!b.market_cap_rank) return -1;
+  return a.market_cap_rank - b.market_cap_rank;
+});

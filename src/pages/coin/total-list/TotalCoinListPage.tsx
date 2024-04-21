@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import {getCoins} from '@apis/coin-gecko';
 import CoinTable from "@common/components/CoinTable";
-import { getColumnsData } from "@lib/utils";
+import { getColumnsData, sortedBookmarksByMarketCapRank } from "@lib/utils";
 import { useEffect, useState } from "react";
 import { ICoin } from "@common/interface/interface";
 import { useGlobalContext } from "@contexts/GlobalContext";
@@ -45,9 +45,6 @@ useEffect(() => {
     } else {
       setFetchListData(queryResults.data)  
     }
-console.log('하..진짜 왜 안대는거야..')
-
-    
   }
 }, [queryResults.data])
 
@@ -60,12 +57,6 @@ useEffect(() => {
   }
 }, [queryResults.error])
 
-
-useEffect(() => {
-  console.log('변경되어야함'+pageSize)
-}, [bookmarkedListData])
-
-
   const handleChangeViewType = (event: any) => {
     if(event.target.value == ViewTypeEnum.TOTAL) {
       setViewType(ViewTypeEnum.TOTAL)
@@ -75,7 +66,8 @@ useEffect(() => {
       /// -> 30개 보기로 변경 -> 전체 보기여서 30개가 보여야 하는데 11개가 보이는 문제.
     } else {
       setViewType(ViewTypeEnum.BOOKMARKS)
-      setBookmarkedListData(bookmarks)
+      const sorted = sortedBookmarksByMarketCapRank(bookmarks)
+      setBookmarkedListData(sorted)
     }
   };
 
@@ -102,8 +94,9 @@ useEffect(() => {
     }
     setPage(1);
     if(viewType == ViewTypeEnum.BOOKMARKS) {
-      const slicedList = bookmarks.slice(0, event.target.value);
-      setBookmarkedListData(slicedList)
+      const slicedList = bookmarks.slice(0, event.target.value)
+      const sorted = sortedBookmarksByMarketCapRank(slicedList)
+      setBookmarkedListData(sorted)
     }
   };
 

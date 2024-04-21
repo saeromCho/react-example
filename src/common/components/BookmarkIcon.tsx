@@ -44,6 +44,7 @@ const BookmarkIcon: React.FC<IBookmarkIconProps> = ({ isBookmarked, coin }) => {
     } else {
       addBookmark(coin);
     }
+    
     notify(isBookmarked)
   };
 

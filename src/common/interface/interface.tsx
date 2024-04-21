@@ -1,5 +1,4 @@
-import { PageSizeEnum, LocaleEnum, CurrencyEnum } from "@lib/enum";
-import { Dispatch, ReactNode, SetStateAction } from "react";
+import {  LocaleEnum, CurrencyEnum } from "@lib/enum";
 
 export interface ICoin {
   id: string;
