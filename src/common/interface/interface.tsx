@@ -6,27 +6,27 @@ export interface ICoin {
   symbol: string;
   name: string;
   image: string;
-  current_price?: number;
+  current_price: number | null;
   market_cap: number;
-  market_cap_rank?: number;
-  fully_diluted_valuation?: number;
+  market_cap_rank: number | null;
+  fully_diluted_valuation?: number | null;
   total_volume: number;
-  high_24h?: number;
-  low_24h?: number;
-  price_change_24h?: number;
-  price_change_percentage_24h?: number;
-  market_cap_change_24h?: number;
-  market_cap_change_percentage_24h?: number;
+  high_24h: number | null;
+  low_24h: number | null;
+  price_change_24h: number;
+  price_change_percentage_24h: number | null;
+  market_cap_change_24h: number;
+  market_cap_change_percentage_24h: number | null;
   circulating_supply: number;
   total_supply: number;
-  max_supply?: number;
+  max_supply: number | null;
   ath: number;
   ath_change_percentage: number;
   ath_date: string;
   atl: number;
   atl_change_percentage: number;
   atl_date: string;
-  roi?: string;
+  roi: string | null;
   last_updated: string;
   price_change_percentage_1h_in_currency: number
   price_change_percentage_24h_in_currency: number,
@@ -55,13 +55,31 @@ export interface ICoinNameCellProps {
 
 export interface ICoinInfoRowProps {
   label: string;
-  value: string | number;
+  value: string | number | undefined;
 };
 
 export interface IInfoTableProps {
     data: ICoinInfoRowProps[];
 }
 
+export interface ICurrencyProps {
+  currency: string;
+}
+
+export interface ICoinInfoTableProps {
+  marketCapRank: number; 
+  websiteUrl: string | undefined;
+}
+
+export interface ICoinPriceAndChangedRateProps {
+  currency: CurrencyEnum;
+  currentPrice: number | null;
+  changedRate24HByCurrency: number;
+  symbol: string;
+  changedRate24H: number | null;
+  marketCap: number;
+  totalVolume24H: number;
+}
 
 /** coin detail interface */
 // To parse this data:
@@ -699,3 +717,8 @@ const typeMap: any = {
       "green",
   ],
 };
+
+export interface ICoinDescription {
+  ko: string | null;
+  en: string | null;
+}

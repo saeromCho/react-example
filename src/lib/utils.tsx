@@ -83,7 +83,7 @@ export const getColumnsData = (currency: CurrencyEnum) => [
 ];
 
 
-const formatNumber = (value: number, hasDecimal = true) => {
+export const formatNumber = (value: number, hasDecimal = true) => {
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'decimal',
     minimumFractionDigits: hasDecimal ? 2 : 0,
