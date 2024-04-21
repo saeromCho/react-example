@@ -17,7 +17,7 @@ const CoinDetailPage = () => {
   const { id } = useParams();
   const { bookmarks, changeCurrency } = useGlobalContext();
   const [coinData, setCoinData] = useState<ICoinDetail | null>(null);
-  const [currency, setCurrency] = useState(CurrencyEnum.KRW);
+  const [currency, setCurrency] = useState<CurrencyEnum>(CurrencyEnum.KRW);
   const [isDescriptionShown, setIsDescriptionShown] = useState(false);
 
   const getQueryKey = () => {
@@ -92,12 +92,12 @@ const CoinDetailPage = () => {
             <CoinInfoTable marketCapRank={coinData.market_cap_rank} websiteUrl={coinData.links.homepage.at(0)}  />
             <CoinPriceAndChangedRate 
                 currency={currency}
-                currentPrice={coinData.market_data.current_price} 
+                currentPrice={coinData.market_data.current_price[currency]} 
                 changedRate24HByCurrency={coinData.market_data.price_change_percentage_24h_in_currency[currency]} 
                 symbol ={coinData.symbol} 
                 changedRate24H={coinData.market_data.price_change_percentage_24h}
-                marketCap={coinData.market_data.market_cap} 
-                totalVolume24H={coinData.market_data.total_volume}
+                marketCap={coinData.market_data.market_cap[currency]} 
+                totalVolume24H={coinData.market_data.total_volume[currency]}
             />
           </div>
           
@@ -118,17 +118,15 @@ const CoinDetailPage = () => {
           </div>
           </div>
           {/* 설명보기 섹션 */}
-          {isDescriptionShown && (
-            <>
-              <div>설명 보기</div>
+          <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: '20px',marginBottom: '20px', cursor: 'pointer'}}  onClick={toggleArrow}>
+            <div >설명 보기</div>
               <svg
-                onClick={toggleArrow}
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke={isDescriptionShown ? "blue" : "red"}
+                stroke={"black"}
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -139,8 +137,9 @@ const CoinDetailPage = () => {
               >
                 <path d="M5 15l7-7 7 7"/>
               </svg>
-              <div><CoinDescription ko={coinData.description.ko} en={coinData.description.en} /></div>
-            </>
+          </div>
+          {isDescriptionShown && (
+              <CoinDescription ko={coinData.description.ko} en={coinData.description.en} />
           )}
           <div>
           </div>

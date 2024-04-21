@@ -45,7 +45,7 @@ export interface IGlobalContextType {
 
 export interface IBookmarkIconProps {
   isBookmarked: boolean;
-  coin: ICoin;
+  coin: any;
 }
 
 export interface ICoinNameCellProps {
@@ -73,23 +73,14 @@ export interface ICoinInfoTableProps {
 
 export interface ICoinPriceAndChangedRateProps {
   currency: CurrencyEnum;
-  currentPrice: number | null;
-  changedRate24HByCurrency: number;
+  currentPrice: number | undefined;
+  changedRate24HByCurrency: number | undefined;
   symbol: string;
   changedRate24H: number | null;
-  marketCap: number;
-  totalVolume24H: number;
+  marketCap: number | undefined;
+  totalVolume24H: number | undefined;
 }
 
-/** coin detail interface */
-// To parse this data:
-//
-//   import { Convert, Welcome } from "./file";
-//
-//   const welcome = Convert.toWelcome(json);
-//
-// These functions will throw an error if the JSON doesn't
-// match the expected interface, even if the JSON is valid.
 
 export interface ICoinDetail {
   id:                              ID;
@@ -115,7 +106,7 @@ export interface ICoinDetail {
   sentiment_votes_down_percentage: number;
   watchlist_portfolio_users:       number;
   market_cap_rank:                 number;
-  market_data:                     ICoin;
+  market_data:                     IMarketData;
   community_data:                  CommunityData;
   developer_data:                  DeveloperData;
   status_updates:                  any[];
@@ -233,7 +224,7 @@ export interface ReposURL {
 }
 
 export interface IMarketData {
-  current_price:                                { [key: string]: number };
+  current_price:                                { [key in CurrencyEnum]?: number;};
   total_value_locked:                           null;
   mcap_to_tvl_ratio:                            null;
   fdv_to_tvl_ratio:                             null;
@@ -244,11 +235,11 @@ export interface IMarketData {
   atl:                                          { [key: string]: number };
   atl_change_percentage:                        { [key: string]: number };
   atl_date:                                     { [key: string]: Date };
-  market_cap:                                   { [key: string]: number };
+  market_cap:                                   { [key in CurrencyEnum]?: number; };
   market_cap_rank:                              number;
   fully_diluted_valuation:                      { [key: string]: number };
   market_cap_fdv_ratio:                         number;
-  total_volume:                                 { [key: string]: number };
+  total_volume:                                 { [key in CurrencyEnum]?: number; };
   high_24h:                                     { [key: string]: number };
   low_24h:                                      { [key: string]: number };
   price_change_24h:                             number;
@@ -261,9 +252,9 @@ export interface IMarketData {
   price_change_percentage_1y:                   number;
   market_cap_change_24h:                        number;
   market_cap_change_percentage_24h:             number;
-  price_change_24h_in_currency:                 { [key: string]: number };
+  price_change_24h_in_currency:                 { [key in CurrencyEnum]?: number; };
   price_change_percentage_1h_in_currency:       { [key: string]: number };
-  price_change_percentage_24h_in_currency:      { [key: string]: number };
+  price_change_percentage_24h_in_currency:      {  [key in CurrencyEnum]?: number; };
   price_change_percentage_7d_in_currency:       { [key: string]: number };
   price_change_percentage_14d_in_currency:      { [key: string]: number };
   price_change_percentage_30d_in_currency:      { [key: string]: number };

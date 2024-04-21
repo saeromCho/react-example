@@ -26,7 +26,12 @@ const CoinPriceAndChangedRate: React.FC<ICoinPriceAndChangedRateProps> = ({
     justifyContent: 'end',
     alignItems: 'center'}}>
           <div style={{fontSize: '24px', fontWeight: 'bold' }}> {currency === CurrencyEnum.KRW ? '₩' : '$'}{currentPrice != null ? formatNumber(currentPrice) : '-'}</div>
-          <div style={{marginLeft: '20px',fontSize: '14px', fontWeight: 'bold', color: changedRate24HByCurrency >= 0 ? changedRate24HByCurrency == 0 ? 'black' : 'red': 'blue' }}>{formatNumber(changedRate24HByCurrency)}%</div>
+          <div style={{
+              color: changedRate24HByCurrency !== undefined && changedRate24HByCurrency >= 0 ? 'red' : 'blue', fontWeight: 'bold',
+              marginLeft: '10px'
+            }}>
+              {changedRate24HByCurrency !== undefined ? `${formatNumber(changedRate24HByCurrency)}%` : '-'}
+          </div>
         </div>
         <div style={{display: 'flex',
     flexDirection: 'row',
@@ -34,17 +39,17 @@ const CoinPriceAndChangedRate: React.FC<ICoinPriceAndChangedRateProps> = ({
     alignItems: 'center'}}>
           <div style={{fontSize: '12px', color: 'grey' }}>1.0000000 {symbol.toLocaleUpperCase()}</div>
           
-          <div style={{marginLeft: '20px',fontSize: '12px', color: changedRate24H != null ? changedRate24H >= 0 ? changedRate24H == 0 ? 'black' : 'red': 'blue':'black' }}>{changedRate24H != null ? formatNumber(changedRate24H):'-'}%</div>
+          <div style={{marginLeft: '20px',fontSize: '12px', color: changedRate24H != null ? changedRate24H >= 0 ? changedRate24H == 0 ? 'black' : 'red': 'blue':'black'}}>{changedRate24H != null ? formatNumber(changedRate24H):'-'}%</div>
         </div>
       </div>
       <div style={{display: 'flex',flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '100px'}}>
         <div >
           <div style={{fontSize: '12px', marginBottom: '6px'}}>시가 총액</div>
-          <div style={{fontSize: '12px'}}>{currency === CurrencyEnum.KRW ? '₩' : '$'}{formatNumber(marketCap)}</div>
+          <div style={{fontSize: '12px'}}>{currency === CurrencyEnum.KRW ? '₩' : '$'}{marketCap !== undefined && formatNumber(marketCap)}</div>
         </div>
         <div>
           <div style={{fontSize: '12px',     marginBottom: '6px'}}>24시간 거래 대금</div>
-          <div style={{fontSize: '12px'}}>{currency === CurrencyEnum.KRW ? '₩' : '$'}{formatNumber(totalVolume24H)}</div>
+          <div style={{fontSize: '12px'}}>{currency === CurrencyEnum.KRW ? '₩' : '$'}{totalVolume24H !== undefined && formatNumber(totalVolume24H)}</div>
         </div>
       </div>
     </div>

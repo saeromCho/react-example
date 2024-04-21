@@ -1,4 +1,4 @@
-import {  ICoin, ICoinDetail, ICoinInfoTableProps, IInfoTableProps } from "@common/interface/interface";
+import {  ICoinInfoTableProps  } from "@common/interface/interface";
 import CoinInfoRow from "./CoinInfoRow";
 import { styled } from "styled-components";
 
@@ -21,8 +21,8 @@ export default CoinInfoTable;
 
 const StyledTable = styled.table`
   width: 50%;
-  border-collapse: collapse; // 테두리 중복을 방지
-  border: 1px solid lightgrey; // 테이블 외곽에 테두리 적용
+  border-collapse: collapse;
+  border: 1px solid lightgrey;
 `;
 
 

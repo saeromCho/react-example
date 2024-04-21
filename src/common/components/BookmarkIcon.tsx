@@ -2,8 +2,6 @@ import { IBookmarkIconProps } from "@common/interface/interface";
 import { useGlobalContext } from "@contexts/GlobalContext";
 import toast from "react-hot-toast";
 
-
-
 const BookmarkIcon: React.FC<IBookmarkIconProps> = ({ isBookmarked, coin }) => {
   const { addBookmark, removeBookmark } = useGlobalContext();
 
