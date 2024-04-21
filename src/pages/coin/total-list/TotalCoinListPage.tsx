@@ -11,14 +11,15 @@ import { Navigate } from "react-router-dom";
 
 const TotalCoinListPage = () => {
   const { bookmarks, changeCurrency } = useGlobalContext();
-  const [listData, setListData] = useState<ICoin[]>([]);
+  const [fetchListData, setFetchListData] = useState<ICoin[]>([]);
+  const [bookmarkedListData, setBookmarkedListData] = useState<ICoin[]>([]);
   const [viewType, setViewType] = useState(ViewTypeEnum.TOTAL);
   const [currency, setCurrency] = useState(CurrencyEnum.KRW);
   const [pageSize, setPageSize] = useState(PageSizeEnum.FIFTY);
   const [page, setPage] = useState(1);
  
   const getQueryKey = () => {
-    return ['coins', viewType, currency, pageSize, page];
+    return ['coins', currency, pageSize, page];
   };
   const getData = () => {
     return viewType === ViewTypeEnum.TOTAL ? getCoins(currency, 'market_cap_desc', pageSize, page,'en') : Promise.resolve(bookmarks);
@@ -34,7 +35,7 @@ const TotalCoinListPage = () => {
 
   useEffect(() => {
     if (queryResults.data) {
-      setListData(queryResults.data);
+      setFetchListData(queryResults.data);
     }
   }, [queryResults.data]);
 
@@ -52,7 +53,7 @@ const TotalCoinListPage = () => {
       setViewType(ViewTypeEnum.TOTAL)
     } else {
       setViewType(ViewTypeEnum.BOOKMARKS)
-      setListData(bookmarks);
+      setBookmarkedListData(bookmarks);
     }
   };
 
@@ -106,7 +107,7 @@ const TotalCoinListPage = () => {
         <option value={PageSizeEnum.FIFTY}>50개 보기</option>
       </select>
       </div>
-      {queryResults.isLoading ? <div>Loading...</div> : <CoinTable name={"가상자산 시세 목록"} data={listData} columns={getColumnsData(currency)} noDataMessage="No coins data available"  />}
+      {queryResults.isLoading ? <div>Loading...</div> : <CoinTable name={"가상자산 시세 목록"} data={viewType == ViewTypeEnum.TOTAL ? fetchListData : bookmarkedListData} columns={getColumnsData(currency)} noDataMessage="No coins data available"  />}
       {!queryResults.isLoading && viewType == ViewTypeEnum.TOTAL && <div onClick={() => handleChangePagination()}>+ 더보기</div>}
     </div>
   );
