@@ -33,12 +33,26 @@ function setSymbolAmountInSymbol(
   value: string,
   setSymbolAmount: (value: ((prevState: string) => string) | string) => void,
 ) {
+  if (value.trim() === '') {
+    setSymbolAmount('0');
+    return;
+  }
+
+  if (value.startsWith('0') && value.length > 1) {
+    if (!isNaN(Number(value[1]))) {
+      value = value.substring(1); // "01", "02" 등의 경우 "0"을 제거
+    }
+  }
+
   const cleanValue = value.replace(/,/g, '').match(optionalDecimalWithMaxEightPlacesRegex);
 
   if (cleanValue) {
     const numericValue = cleanValue[0];
     const parts = numericValue.split('.');
     parts[0] = parts[0].replace(thousandsSeparatorRegex, ',');
+    if (parts.length > 1 && parts[1].length > 8) {
+      parts[1] = parts[1].substring(0, 8); // 소수점 이하 8자리로 제한
+    }
     setSymbolAmount(parts.join('.'));
   }
 }
@@ -49,13 +63,32 @@ function setCurrencyAmountInSymbol(
   value: string,
   setCurrencyAmount: (value: ((prevState: string) => string) | string) => void,
 ) {
-  const currentPrice = coinData?.market_data.current_price[currency] ?? 0;
-  const newCurrencyAmount = parseFloat(value) * currentPrice;
-  const newCurrencyAmountToString = newCurrencyAmount.toString();
-  value = newCurrencyAmountToString.replace(/,/g, '');
+  if (value.trim() === '') {
+    setCurrencyAmount('0');
+    return;
+  }
+  // 숫자 변환 처리 전에 0만 연속으로 들어올 경우 처리
+  if (value.replace(/,/g, '') === '0') {
+    setCurrencyAmount('0');
+    return;
+  }
 
-  validateCurrency(value, setCurrencyAmount);
-  return value;
+  // 소수점 8자리 이상 입력 방지 로직 추가
+  const numericValue = parseFloat(value.replace(/,/g, ''));
+  if (numericValue.toString().split('.')[1]?.length > 8) {
+    return; // 소수점 8자리 이상의 입력은 처리하지 않음
+  }
+
+  const currentPrice = coinData?.market_data.current_price[currency] ?? 0;
+  const newCurrencyAmount = numericValue * currentPrice;
+  if (newCurrencyAmount === 0) {
+    setCurrencyAmount('0'); // 숫자가 0인 경우 "0.00" 대신 "0"으로 표시
+  } else {
+    const newCurrencyAmountToString = newCurrencyAmount
+      .toFixed(2)
+      .replace(thousandsSeparatorRegex, ',');
+    setCurrencyAmount(newCurrencyAmountToString);
+  }
 }
 
 function validateCurrency(
@@ -77,8 +110,8 @@ function setSymbolAmountInCurrency(
   value: string,
   setSymbolAmount: (value: ((prevState: string) => string) | string) => void,
 ) {
-  const currentPrice = coinData?.market_data.current_price[currency] ?? 0;
-  const newSymbolAmount = parseFloat(value) / (currentPrice || 1);
+  const currentPrice = coinData?.market_data.current_price[currency] ?? 1;
+  const newSymbolAmount = parseFloat(value) / currentPrice;
   const newSymbolAmountToString = newSymbolAmount.toString();
   const cleanValue = newSymbolAmountToString
     .replace(/,/g, '')
@@ -141,12 +174,22 @@ const CoinDetailPage = () => {
     }
   };
 
+  /**
+   * symbol 인풋창에서 심볼을 입력하면 정해진 비율에 따라 계산되어 currency 가 변환되는 메소드
+   * @param value
+   */
   const handleChangeSymbolAmount = (value: string) => {
+    console.log(value);
+
     setSymbolAmountInSymbol(value, setSymbolAmount);
 
     setCurrencyAmountInSymbol(coinData, currency, value, setCurrencyAmount);
   };
 
+  /**
+   * currency 인풋창에서 통화량을 입력하면 정해진 비율에 따라 계산되어 symbol 이 변환되는 메소드
+   * @param value
+   */
   const handleChangeCurrencyAmount = (value: string) => {
     value = value.replace(/,/g, '');
 
