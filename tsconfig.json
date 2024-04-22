@@ -1,27 +1,51 @@
 {
-    "compilerOptions": {
-      "target": "es6",
-      "lib": ["dom", "dom.iterable", "esnext"],
-      "esModuleInterop": true,
-      "module": "esnext",
-      "moduleResolution": "node",
-      "resolveJsonModule": true,
-      "forceConsistentCasingInFileNames": true,
-      "strict": true,
-      "skipLibCheck": true,
-      "jsx": "react-jsx",
-      "outDir": "./dist",
-      "baseUrl": ".",
-      "paths": {
-        "@*": ["src/*"],
-        "@pages/*": ["src/pages/*"],
-        "@common/*":["src/common/*"],
-        "@apis/*": ["src/apis/*"],
-        "@static/*": ["src/static/*"],
-        "@contexts/*":  ["src/contexts/*"],
-        "@lib/*":  ["src/lib/*"],
-      }
-    },
-    "include": ["src"],
-    "exclude": ["node_modules", "dist",  ".eslintrc.js"]
-  }
+  "compilerOptions": {
+    "target": "es6",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@*": [
+        "src/*"
+      ],
+      "@pages/*": [
+        "src/pages/*"
+      ],
+      "@common/*": [
+        "src/common/*"
+      ],
+      "@apis/*": [
+        "src/apis/*"
+      ],
+      "@static/*": [
+        "src/static/*"
+      ],
+      "@contexts/*": [
+        "src/contexts/*"
+      ],
+      "@lib/*": [
+        "src/lib/*"
+      ]
+    }
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".eslintrc.cjs"
+  ]
+}

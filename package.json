@@ -8,7 +8,9 @@
   "scripts": {
     "build": "webpack --mode production",
     "watch": "webpack --mode development --watch",
-    "start": "npm run build && webpack serve --mode development --open --hot"
+    "start": "npm run build && webpack serve --mode development --open --hot",
+    "format": "prettier --check ./src",
+    "format:fix": "prettier --write ./src"
   },
   "keywords": [],
   "license": "ISC",
