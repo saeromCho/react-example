@@ -22,13 +22,6 @@ import {
 } from '@lib/constant';
 import arrowImage from '../../../assets/arrow.png';
 
-function setCurrencyAmountInCurrency(
-  value: string,
-  setCurrencyAmount: (value: ((prevState: string) => string) | string) => void,
-) {
-  validateCurrency(value, setCurrencyAmount);
-}
-
 function setSymbolAmountInSymbol(
   value: string,
   setSymbolAmount: (value: ((prevState: string) => string) | string) => void,
@@ -91,13 +84,13 @@ function setCurrencyAmountInSymbol(
   }
 }
 
-function validateCurrency(
+function setCurrencyAmountInCurrency(
   value: string,
   setCurrencyAmount: (value: ((prevState: string) => string) | string) => void,
 ) {
   if (value === '') {
-    setCurrencyAmount('');
-  } else if (integerOrDecimalUpToTwoPlacesRegex.test(value) || value === '') {
+    setCurrencyAmount('0'); // 빈 문자열이면 0을 표시
+  } else if (integerOrDecimalUpToTwoPlacesRegex.test(value)) {
     const parts = value.split('.');
     parts[0] = parts[0].replace(thousandsSeparatorRegex, ',');
     setCurrencyAmount(parts.join('.'));
