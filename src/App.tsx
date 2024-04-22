@@ -1,7 +1,4 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import BookmarkedCoinListPage from '@pages/coin/bookmarked-list/BookmarkedCoinListPage';
-import CoinDetailPage from '@pages/coin/detail/CoinDetailPage';
-import TotalCoinListPage from '@pages/coin/total-list/TotalCoinListPage';
 import LayoutWithGNB from '@common/components/LayoutWithGNB';
 import {
   Query,
@@ -13,8 +10,11 @@ import {
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { GlobalProvider } from '@contexts/GlobalContext';
 import { Toaster } from 'react-hot-toast';
-import ErrorPage from '@pages/error/ErrorPage';
 import ToastPop from '@common/components/ToastPop';
+import TotalCoinListPage from '@domain/coin/total-list/TotalCoinListPage';
+import BookmarkedCoinListPage from '@domain/coin/bookmarked-list/BookmarkedCoinListPage';
+import CoinDetailPage from '@domain/coin/detail/CoinDetailPage';
+import ErrorPage from '@domain/error/ErrorPage';
 
 const App = () => {
   const queryClient = new QueryClient({

@@ -31,11 +31,11 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@pages': path.resolve(__dirname, './src/pages'),
-      '@common': path.resolve(__dirname, './src/common'),
       '@apis': path.resolve(__dirname, './src/apis'),
       '@assets': path.resolve(__dirname, './src/assets'),
+      '@common': path.resolve(__dirname, './src/common'),
       '@contexts': path.resolve(__dirname, './src/contexts'),
+      '@domain': path.resolve(__dirname, './src/domain'),
       '@lib': path.resolve(__dirname, './src/lib'),
     },
   },

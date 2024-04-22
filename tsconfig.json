@@ -20,8 +20,8 @@
       "@*": [
         "src/*"
       ],
-      "@pages/*": [
-        "src/pages/*"
+      "@domain/*": [
+        "src/domain/*"
       ],
       "@common/*": [
         "src/common/*"
