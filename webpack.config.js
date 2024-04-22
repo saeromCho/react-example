@@ -1,15 +1,33 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = {
   entry: './src/index.tsx',
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
+    path: path.join(__dirname, '/dist'),
     clean: true,
     publicPath: '/',
   },
 
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        react: {
+          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          name: 'react',
+          chunks: 'all',
+        },
+        vendors: {
+          test: /\/node_modules\//i,
+          chunks: 'all',
+        },
+      },
+    },
+    runtimeChunk: { name: 'runtime' },
+  },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
@@ -37,18 +55,21 @@ module.exports = {
         test: /\.(png|jpeg|jpg)$/,
         type: 'asset/resource',
       },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-      },
     ],
   },
   plugins: [
+    // new BundleAnalyzerPlugin(),
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
   ],
-  devtool: 'inline-source-map',
+  devtool: 'hidden-source-map',
+  cache: {
+    type: 'filesystem',
+    buildDependencies: {
+      config: [__filename],
+    },
+  },
   devServer: {
     historyApiFallback: true,
     port: 3000,
