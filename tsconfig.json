@@ -29,8 +29,8 @@
       "@apis/*": [
         "src/apis/*"
       ],
-      "@static/*": [
-        "src/static/*"
+      "@assets/*": [
+        "src/assets/*"
       ],
       "@contexts/*": [
         "src/contexts/*"

@@ -20,8 +20,8 @@ import {
   optionalDecimalWithMaxEightPlacesRegex,
   thousandsSeparatorRegex,
 } from '@lib/constant';
+import arrowImage from '../../../assets/arrow.png';
 
-// import arrowImage from "@static/assets/arrow.png";
 function setCurrencyAmountInCurrency(
   value: string,
   setCurrencyAmount: (value: ((prevState: string) => string) | string) => void,
@@ -203,8 +203,7 @@ const CoinDetailPage = () => {
               <SymbolInput value={symbolAmount} onChange={handleChangeSymbolAmount} />
 
               <BetweenArrowDiv>
-                화살표
-                {/* <img src={arrowImage} alt="Logo" /> */}
+                <ArrowImg src={arrowImage} alt="Logo" />
               </BetweenArrowDiv>
 
               <CurrencyInput
@@ -308,4 +307,10 @@ const DescriptionDiv = styled.div`
   margin-top: 20px;
   margin-bottom: 20px;
   cursor: pointer;
+`;
+
+const ArrowImg = styled.img`
+  width: 30px;
+  height: 30px;
+  padding-top: 30px;
 `;

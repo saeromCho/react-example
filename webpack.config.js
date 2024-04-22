@@ -34,7 +34,7 @@ module.exports = {
       '@pages': path.resolve(__dirname, './src/pages'),
       '@common': path.resolve(__dirname, './src/common'),
       '@apis': path.resolve(__dirname, './src/apis'),
-      '@static': path.resolve(__dirname, './src/static'),
+      '@assets': path.resolve(__dirname, './src/assets'),
       '@contexts': path.resolve(__dirname, './src/contexts'),
       '@lib': path.resolve(__dirname, './src/lib'),
     },
@@ -51,8 +51,11 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|jpeg|jpg)$/,
+        test: /\.(png|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
+        generator: {
+          filename: 'images/[hash][ext][query]', // 이미지 파일의 저장 위치와 이름 설정
+        },
       },
     ],
   },

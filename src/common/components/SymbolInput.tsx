@@ -21,6 +21,6 @@ export const AmountInput = styled.input`
   padding-right: 10px;
   padding-left: 10px;
   height: 40px;
-  width: 100%;
   text-align: right;
+  border: 1px solid lightgrey;
 `;
