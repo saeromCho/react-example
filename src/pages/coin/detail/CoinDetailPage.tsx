@@ -156,11 +156,17 @@ const CoinDetailPage = () => {
 
   const handleChangeCurrencyAmount = useCallback(
     (value: string) => {
-      value = value.replace(/,/g, '');
+      value = value.replace(/,/g, ''); // 쉼표 제거
       if (value === '') {
         // 빈 문자열이면 0을 표시
         setCurrencyAmount('0');
         setSymbolAmount('0');
+        return;
+      }
+
+      // 입력 값이 완전히 비었거나, '0.' 또는 '.'만 남았을 때
+      if (value === '0.' || value === '.') {
+        setCurrencyAmount('0');
         return;
       }
 
@@ -169,18 +175,23 @@ const CoinDetailPage = () => {
         value = value.substring(1);
       }
 
-      if (integerOrDecimalUpToTwoPlacesRegex.test(value)) {
+      if (value === '') {
+        setCurrencyAmount('0'); // 빈 문자열이면 0을 표시
+      } else if (integerOrDecimalUpToTwoPlacesRegex.test(value)) {
         const parts = value.split('.');
         parts[0] = parts[0].replace(thousandsSeparatorRegex, ',');
         setCurrencyAmount(parts.join('.'));
       }
 
       const currentPrice = coinData?.market_data.current_price[currency] ?? 1;
-      // const numericValue = parseFloat(value);
       const numericValue = parseFloat(value.replace(/,/g, ''));
       const newSymbolAmount = numericValue / currentPrice;
       const formattedSymbolAmount = newSymbolAmount.toFixed(8); // 소수점 이하 8자리로 포맷, 천 단위 구분자 제거
-      setSymbolAmount(formattedSymbolAmount);
+      if (formattedSymbolAmount === '0.00000000') {
+        setSymbolAmount('0'); // 추가된 조건, 숫자가 매우 작아서 0으로 표시되어야 할 경우
+      } else {
+        setSymbolAmount(formattedSymbolAmount);
+      }
     },
     [coinData, currency],
   );
