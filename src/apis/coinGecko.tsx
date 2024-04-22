@@ -1,17 +1,23 @@
-import { PAGING_SIZE } from "@static/constant";
-import axiosInstance from "./axiosInstance";
+import axiosInstance from './axiosInstance';
+import { PAGING_SIZE } from '@lib/constant';
 
 export const checkPing = async () => {
   try {
-    const response = await axiosInstance.get('/ping')
-    return response.data
-  } catch ( error) {
-    console.error('Failed to fetch ping:', error)
-    throw error
+    const response = await axiosInstance.get('/ping');
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch ping:', error);
+    throw error;
   }
-}
+};
 
-  export const getCoins = async (currency: string, order:string, per_page: number = PAGING_SIZE, page:number, locale: string) => {
+export const getCoins = async (
+  currency: string,
+  order: string,
+  per_page: number = PAGING_SIZE,
+  page: number,
+  locale: string,
+) => {
   try {
     const response = await axiosInstance.get('/coins/markets', {
       params: {
@@ -23,20 +29,20 @@ export const checkPing = async () => {
         price_change_percentage: '1h,24h,7d',
         precision: 2,
       },
-    })
-    return response.data
-  } catch ( error) {
-    console.error('Failed to fetch coins:', error)
-    throw error
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch coins:', error);
+    throw error;
   }
 };
 
 export const getCoin = async (id: string | undefined) => {
   try {
-    const response = await axiosInstance.get(`/coins/${id}`)
-    return response.data
-  } catch ( error) {
-    console.error(`Failed to fetch coin with id ${id}:`, error)
-    throw error
+    const response = await axiosInstance.get(`/coins/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Failed to fetch coin with id ${id}:`, error);
+    throw error;
   }
 };
