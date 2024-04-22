@@ -1,6 +1,6 @@
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { Fragment } from "react";
-import styled from "styled-components";
+import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { Fragment } from 'react';
+import styled from 'styled-components';
 
 export type TableProps<T> = {
   name: string;
@@ -9,11 +9,7 @@ export type TableProps<T> = {
   noDataMessage?: string;
 };
 
-const CoinTable = <T,>({
-  data,
-  columns,
-  noDataMessage,
-}: TableProps<T>) => {
+const CoinTable = <T,>({ data, columns, noDataMessage }: TableProps<T>) => {
   const table = useReactTable<T>({
     data,
     columns,
@@ -70,25 +66,24 @@ const TableContainer = styled.div`
     display: flex;
     height: 50px;
     border-bottom: 1px solid rgba(224, 224, 224, 1);
-  
   }
 `;
 const HeaderCell = styled.div<{ width: number }>`
-width: ${({ width }) => width}px;
-padding-top: 14px;
-padding-bottom: 14px;
-padding-left: 10px;
-padding-right: 10px;
-color: white;
-display: flex;
-align-items: center;
-word-break: break-all;
-justify-content: flex-end;
-padding-bottom: 14px;
-font-size: 14px;
-&:first-child {
-  justify-content: center;
-}
+  width: ${({ width }) => width}px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: white;
+  display: flex;
+  align-items: center;
+  word-break: break-all;
+  justify-content: flex-end;
+  padding-bottom: 14px;
+  font-size: 14px;
+  &:first-child {
+    justify-content: center;
+  }
 `;
 
 const TableCell = styled.div<{ width: number }>`
@@ -130,7 +125,7 @@ const TableHeader = styled.div`
 const TableBody = styled.div`
   min-height: auto;
   display: flex;
-  flex-direction: column;  
+  flex-direction: column;
 `;
 
 const NoDataComponent = styled.div`
@@ -146,12 +141,12 @@ const NoDataComponent = styled.div`
 `;
 
 export const CurrencyText = styled.div`
-  font-size:16px;
+  font-size: 16px;
   text-align: right;
 `;
 
 export const SymbolText = styled.div`
-  font-size:14px;
+  font-size: 14px;
   color: grey;
   text-align: right;
   cursor: pointer;

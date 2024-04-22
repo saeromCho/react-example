@@ -1,17 +1,17 @@
-import { NavLink } from "react-router-dom";
-import styled from "styled-components";
+import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
 
 const GNBHeader = () => (
   <GNB>
-      <GNBItem>
-        <StyledNavLink to="/coins" className={({ isActive }) => isActive ? "active" : ""}>
-          가상자산 시세 목록
-        </StyledNavLink>
-        <StyledNavLink to="/bookmarked_list" className={({ isActive }) => isActive ? "active" : ""}>
-          북마크 목록
-        </StyledNavLink>
-      </GNBItem>
-    </GNB>
+    <GNBItem>
+      <StyledNavLink to="/coins" className={({ isActive }) => (isActive ? 'active' : '')}>
+        가상자산 시세 목록
+      </StyledNavLink>
+      <StyledNavLink to="/bookmarked_list" className={({ isActive }) => (isActive ? 'active' : '')}>
+        북마크 목록
+      </StyledNavLink>
+    </GNBItem>
+  </GNB>
 );
 
 export default GNBHeader;
@@ -32,7 +32,7 @@ const GNBItem = styled.div`
   text-decoration: none;
   }
 `;
-  
+
 const StyledNavLink = styled(NavLink)`
   color: grey;
   text-decoration: none;

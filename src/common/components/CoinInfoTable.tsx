@@ -1,19 +1,16 @@
-import {  ICoinInfoTableProps  } from "@common/interface/interface";
-import CoinInfoRow from "./CoinInfoRow";
-import { styled } from "styled-components";
+import { ICoinInfoTableProps } from '@common/interface/interface';
+import CoinInfoRow from './CoinInfoRow';
+import { styled } from 'styled-components';
 
-
-const CoinInfoTable: React.FC<ICoinInfoTableProps> = ({marketCapRank, websiteUrl}) => {
-
+const CoinInfoTable: React.FC<ICoinInfoTableProps> = ({ marketCapRank, websiteUrl }) => {
   return (
     <StyledTable>
       <tbody>
-      <CoinInfoRow key={'rank'} label={'시가총액 Rank'} value={`Rank #${marketCapRank}`} />
-      <CoinInfoRow key={'websiteUrl'} label={'웹사이트'} value={websiteUrl} />
+        <CoinInfoRow key={'rank'} label={'시가총액 Rank'} value={`Rank #${marketCapRank}`} />
+        <CoinInfoRow key={'websiteUrl'} label={'웹사이트'} value={websiteUrl} />
       </tbody>
     </StyledTable>
-  )
-  
+  );
 };
 
 export default CoinInfoTable;
@@ -23,5 +20,3 @@ const StyledTable = styled.table`
   border-collapse: collapse;
   border: 1px solid lightgrey;
 `;
-
-

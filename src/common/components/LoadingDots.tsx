@@ -7,17 +7,17 @@ const LoadingDots = () => {
     borderRadius: '50%',
     backgroundColor: '#4A90E2',
     marginRight: '5px',
-    animation: `flash 1.4s ${delay} infinite ease-in-out both`
+    animation: `flash 1.4s ${delay} infinite ease-in-out both`,
   });
 
   return (
-  <DotsContainer>
-    <div style={dotStyle('0s')} />
-    <div style={dotStyle('0.2s')} />
-    <div style={dotStyle('0.4s')} />
-  </DotsContainer>
-)
-}
+    <DotsContainer>
+      <div style={dotStyle('0s')} />
+      <div style={dotStyle('0.2s')} />
+      <div style={dotStyle('0.4s')} />
+    </DotsContainer>
+  );
+};
 
 export default LoadingDots;
 

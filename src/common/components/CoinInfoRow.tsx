@@ -1,6 +1,5 @@
-import { ICoinInfoRowProps } from "@common/interface/interface";
-import { styled } from "styled-components";
-
+import { ICoinInfoRowProps } from '@common/interface/interface';
+import { styled } from 'styled-components';
 
 const CoinInfoRow: React.FC<ICoinInfoRowProps> = ({ label, value }) => (
   <StyledRow>
@@ -9,7 +8,7 @@ const CoinInfoRow: React.FC<ICoinInfoRowProps> = ({ label, value }) => (
   </StyledRow>
 );
 
-export default CoinInfoRow
+export default CoinInfoRow;
 
 const CoinInfoRowLabel = styled.td`
   background-color: midnightblue;
