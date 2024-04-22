@@ -1,4 +1,4 @@
-import { LocaleEnum, CurrencyEnum } from '@lib/enum';
+import { CurrencyEnum, LocaleEnum } from '@lib/enum';
 
 export interface ICoin {
   id: string;
@@ -59,6 +59,7 @@ export interface ICoinNameCellProps {
 export interface ICoinInfoRowProps {
   label: string;
   value: string | number | undefined;
+  isLink: boolean;
 }
 
 export interface IInfoTableProps {

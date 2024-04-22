@@ -1,10 +1,12 @@
 import { ICoinInfoRowProps } from '@common/interface/interface';
 import { styled } from 'styled-components';
 
-const CoinInfoRow: React.FC<ICoinInfoRowProps> = ({ label, value }) => (
+const CoinInfoRow: React.FC<ICoinInfoRowProps> = ({ label, value, isLink }) => (
   <StyledRow>
     <CoinInfoRowLabel>{label}</CoinInfoRowLabel>
-    <CoinInfoRowValue>{value}</CoinInfoRowValue>
+    <CoinInfoRowValue>
+      {isLink ? <MailLinkATag href={`${value}`}>{value}</MailLinkATag> : value}
+    </CoinInfoRowValue>
   </StyledRow>
 );
 
@@ -15,6 +17,25 @@ const CoinInfoRowLabel = styled.td`
   color: white;
   padding: 18px;
   font-size: 15px;
+`;
+
+export const MailLinkATag = styled.a`
+  color: #3498db;
+  text-decoration: none;
+  transition: color 0.3s;
+
+  &:hover {
+    color: #2980b9;
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: #145d91;
+  }
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const CoinInfoRowValue = styled.td`

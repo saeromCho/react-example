@@ -6,8 +6,13 @@ const CoinInfoTable: React.FC<ICoinInfoTableProps> = ({ marketCapRank, websiteUr
   return (
     <StyledTable>
       <tbody>
-        <CoinInfoRow key={'rank'} label={'시가총액 Rank'} value={`Rank #${marketCapRank}`} />
-        <CoinInfoRow key={'websiteUrl'} label={'웹사이트'} value={websiteUrl} />
+        <CoinInfoRow
+          key={'rank'}
+          label={'시가총액 Rank'}
+          value={`Rank #${marketCapRank}`}
+          isLink={false}
+        />
+        <CoinInfoRow key={'websiteUrl'} label={'웹사이트'} value={websiteUrl} isLink={true} />
       </tbody>
     </StyledTable>
   );

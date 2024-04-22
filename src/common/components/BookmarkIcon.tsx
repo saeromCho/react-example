@@ -10,7 +10,7 @@ const BookmarkIcon: React.FC<IBookmarkIconProps> = ({ isBookmarked, coin }) => {
     if (isBookmarked) {
       ToastPop('북마크가 해제되었습니다.', 4000, 'bottom-center', null, false);
     } else {
-      ToastPop('북마크가 해제되었습니다.', 4000, 'bottom-center', null, false);
+      ToastPop('북마크에 추가되었습니다.', 4000, 'bottom-center', null, false);
     }
   };
 
