@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '@static/constant';
+import { API_BASE_URL } from '@lib/constant';
 import axios from 'axios';
 
 const axiosInstance = axios.create({
