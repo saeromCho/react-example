@@ -22,114 +22,6 @@ import {
 } from '@lib/constant';
 import arrowImage from '../../../assets/arrow.png';
 
-function setSymbolAmountInSymbol(
-  value: string,
-  setSymbolAmount: (value: ((prevState: string) => string) | string) => void,
-) {
-  if (value.trim() === '') {
-    setSymbolAmount('0');
-    return;
-  }
-
-  if (value.startsWith('0') && value.length > 1) {
-    if (!isNaN(Number(value[1]))) {
-      value = value.substring(1); // "01", "02" 등의 경우 "0"을 제거
-    }
-  }
-
-  const cleanValue = value.replace(/,/g, '').match(optionalDecimalWithMaxEightPlacesRegex);
-
-  if (cleanValue) {
-    const numericValue = cleanValue[0];
-    const parts = numericValue.split('.');
-    parts[0] = parts[0].replace(thousandsSeparatorRegex, ',');
-    if (parts.length > 1 && parts[1].length > 8) {
-      parts[1] = parts[1].substring(0, 8); // 소수점 이하 8자리로 제한
-    }
-    setSymbolAmount(parts.join('.'));
-  }
-}
-
-function setCurrencyAmountInSymbol(
-  coinData: ICoinDetail | null,
-  currency: CurrencyEnum,
-  value: string,
-  setCurrencyAmount: (value: ((prevState: string) => string) | string) => void,
-) {
-  if (value.trim() === '') {
-    setCurrencyAmount('0');
-    return;
-  }
-  // 숫자 변환 처리 전에 0만 연속으로 들어올 경우 처리
-  if (value.replace(/,/g, '') === '0') {
-    setCurrencyAmount('0');
-    return;
-  }
-
-  // 소수점 8자리 이상 입력 방지 로직 추가
-  const numericValue = parseFloat(value.replace(/,/g, ''));
-  if (numericValue.toString().split('.')[1]?.length > 8) {
-    return; // 소수점 8자리 이상의 입력은 처리하지 않음
-  }
-
-  const currentPrice = coinData?.market_data.current_price[currency] ?? 0;
-  const newCurrencyAmount = numericValue * currentPrice;
-  if (newCurrencyAmount === 0) {
-    setCurrencyAmount('0'); // 숫자가 0인 경우 "0.00" 대신 "0"으로 표시
-  } else {
-    const newCurrencyAmountToString = newCurrencyAmount
-      .toFixed(2)
-      .replace(thousandsSeparatorRegex, ',');
-    setCurrencyAmount(newCurrencyAmountToString);
-  }
-}
-
-function setCurrencyAmountInCurrency(
-  value: string,
-  setCurrencyAmount: (value: ((prevState: string) => string) | string) => void,
-) {
-  if (value === '') {
-    setCurrencyAmount('0');
-    return;
-  }
-
-  // 입력 값이 0으로 시작하고 그 이후에 숫자가 입력되면 0을 제거
-  if (value.match(/^0\d/)) {
-    value = value.substring(1);
-  }
-
-  if (value === '') {
-    setCurrencyAmount('0'); // 빈 문자열이면 0을 표시
-  } else if (integerOrDecimalUpToTwoPlacesRegex.test(value)) {
-    const parts = value.split('.');
-    parts[0] = parts[0].replace(thousandsSeparatorRegex, ',');
-    setCurrencyAmount(parts.join('.'));
-  }
-}
-
-function setSymbolAmountInCurrency(
-  coinData: ICoinDetail | null,
-  currency: CurrencyEnum,
-  value: string,
-  setSymbolAmount: (value: ((prevState: string) => string) | string) => void,
-) {
-  if (value.trim() === '') {
-    setSymbolAmount('0');
-    return;
-  }
-
-  const currentPrice = coinData?.market_data.current_price[currency] ?? 1;
-  const numericValue = parseFloat(value.replace(/,/g, ''));
-  const newSymbolAmount = numericValue / currentPrice;
-
-  if (newSymbolAmount === 0) {
-    setSymbolAmount('0');
-  } else {
-    const formattedSymbolAmount = newSymbolAmount.toFixed(8); // 소수점 이하 8자리로 포맷, 천 단위 구분자 제거
-    setSymbolAmount(formattedSymbolAmount);
-  }
-}
-
 const CoinDetailPage = () => {
   // const { id } = useParams();
   // const { bookmarks } = useGlobalContext();
@@ -167,17 +59,17 @@ const CoinDetailPage = () => {
   //   }
   // }, [queryResults.data]);
   //
-  const toggleArrow = () => {
-    setIsDescriptionShown(!isDescriptionShown);
-  };
-
-  const handleChangeCurrency = (event: any) => {
-    if (event.target.value == CurrencyEnum.KRW) {
-      setCurrency(CurrencyEnum.KRW);
-    } else {
-      setCurrency(CurrencyEnum.USD);
-    }
-  };
+  // const toggleArrow = () => {
+  //   setIsDescriptionShown(!isDescriptionShown);
+  // };
+  //
+  // const handleChangeCurrency = (event: any) => {
+  //   if (event.target.value == CurrencyEnum.KRW) {
+  //     setCurrency(CurrencyEnum.KRW);
+  //   } else {
+  //     setCurrency(CurrencyEnum.USD);
+  //   }
+  // };
 
   // /**
   //  * symbol 인풋창에서 심볼을 입력하면 정해진 비율에 따라 계산되어 currency 가 변환되는 메소드
@@ -236,7 +128,7 @@ const CoinDetailPage = () => {
         const parts = numericValue.split('.');
         parts[0] = parts[0].replace(thousandsSeparatorRegex, ',');
         if (parts.length > 1 && parts[1].length > 8) {
-          parts[1] = parts[1].substring(0, 8);
+          parts[1] = parts[1].substring(0, 8); // 소수점 이하 8자리로 제한
         }
         setSymbolAmount(parts.join('.'));
       }
@@ -254,7 +146,7 @@ const CoinDetailPage = () => {
       }
       const newCurrencyAmount = numericValue * (coinData?.market_data.current_price[currency] ?? 0);
       if (newCurrencyAmount === 0) {
-        setCurrencyAmount('0');
+        setCurrencyAmount('0'); // 숫자가 0인 경우 "0.00" 대신 "0"으로 표시
       } else {
         setCurrencyAmount(newCurrencyAmount.toFixed(2).replace(thousandsSeparatorRegex, ','));
       }
@@ -266,11 +158,13 @@ const CoinDetailPage = () => {
     (value: string) => {
       value = value.replace(/,/g, '');
       if (value === '') {
+        // 빈 문자열이면 0을 표시
         setCurrencyAmount('0');
         setSymbolAmount('0');
         return;
       }
 
+      // 입력 값이 0으로 시작하고 그 이후에 숫자가 입력되면 0을 제거
       if (value.match(/^0\d/)) {
         value = value.substring(1);
       }
@@ -282,9 +176,11 @@ const CoinDetailPage = () => {
       }
 
       const currentPrice = coinData?.market_data.current_price[currency] ?? 1;
-      const numericValue = parseFloat(value);
+      // const numericValue = parseFloat(value);
+      const numericValue = parseFloat(value.replace(/,/g, ''));
       const newSymbolAmount = numericValue / currentPrice;
-      setSymbolAmount(newSymbolAmount.toFixed(8));
+      const formattedSymbolAmount = newSymbolAmount.toFixed(8); // 소수점 이하 8자리로 포맷, 천 단위 구분자 제거
+      setSymbolAmount(formattedSymbolAmount);
     },
     [coinData, currency],
   );
@@ -295,6 +191,18 @@ const CoinDetailPage = () => {
       setCurrencyAmount(formatNumber(queryResults.data.market_data.current_price[currency] ?? 0));
     }
   }, [queryResults.data, currency]);
+
+  const toggleArrow = () => {
+    setIsDescriptionShown(!isDescriptionShown);
+  };
+
+  const handleChangeCurrency = (event: any) => {
+    if (event.target.value == CurrencyEnum.KRW) {
+      setCurrency(CurrencyEnum.KRW);
+    } else {
+      setCurrency(CurrencyEnum.USD);
+    }
+  };
 
   return (
     <WrapperDiv>
