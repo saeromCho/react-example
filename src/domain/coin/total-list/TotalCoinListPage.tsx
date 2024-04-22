@@ -41,7 +41,7 @@ const TotalCoinListPage = () => {
   }, [currency, pageSize]);
 
   useEffect(() => {
-    if (queryResults.data) {
+    if (!queryResults.isLoading && queryResults.data) {
       if (isLoadingMore) {
         setFetchListData((oldData) => [...oldData, ...queryResults.data]);
         setIsLoadingMore(false);

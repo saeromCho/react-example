@@ -1,5 +1,4 @@
 import { getCoin } from '@apis/coinGecko';
-import CoinInfoTable from '@common/components/CoinInfoTable';
 import BookmarkIcon from '@common/components/BookmarkIcon';
 import { ICoinDetail } from '@common/interface/interface';
 import { useGlobalContext } from '@contexts/GlobalContext';
@@ -7,13 +6,7 @@ import { CurrencyEnum } from '@lib/enum';
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import CoinDescription from '@common/components/CoinDescription';
-import CoinPriceAndChangedRate from '@common/components/CoinPriceAndChangedRate';
-import CurrencyInput from '@common/components/CurrencyInput';
-import LoadingDots from '@common/components/LoadingDots';
-import SymbolInput from '@common/components/SymbolInput';
 import { styled } from 'styled-components';
-import ArrowIconSvg from '@lib/ArrowIconSvg';
 import { formatNumber } from '@lib/utils';
 import {
   integerOrDecimalUpToTwoPlacesRegex,
@@ -21,74 +14,15 @@ import {
   thousandsSeparatorRegex,
 } from '@lib/constant';
 import arrowImage from '../../../assets/arrow.png';
+import LoadingDots from '@common/components/LoadingDots';
+import CoinInfoTable from '@domain/coin/detail/components/CoinInfoTable';
+import CoinPriceAndChangedRate from '@domain/coin/detail/components/CoinPriceAndChangedRate';
+import SymbolInput from '@domain/coin/detail/components/SymbolInput';
+import CurrencyInput from '@domain/coin/detail/components/CurrencyInput';
+import ArrowIconSvg from '@domain/coin/detail/components/ArrowIconSvg';
+import CoinDescription from '@domain/coin/detail/components/CoinDescription';
 
 const CoinDetailPage = () => {
-  // const { id } = useParams();
-  // const { bookmarks } = useGlobalContext();
-  // const [coinData, setCoinData] = useState<ICoinDetail | null>(null);
-  // const [currency, setCurrency] = useState<CurrencyEnum>(CurrencyEnum.KRW);
-  // const [isDescriptionShown, setIsDescriptionShown] = useState(false);
-  // const [symbolAmount, setSymbolAmount] = useState('1');
-  // const [currencyAmount, setCurrencyAmount] = useState('');
-  //
-  // const getQueryKey = () => {
-  //   return ['coins', id];
-  // };
-  //
-  // const fetchData = () => {
-  //   return getCoin(id);
-  // };
-  //
-  // const queryResults = useQuery({
-  //   queryKey: getQueryKey(),
-  //   queryFn: fetchData,
-  //   meta: {
-  //     errorMessage: '코인 상세 내용을 가져오는데 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.',
-  //   },
-  //   refetchOnWindowFocus: false,
-  // });
-  //
-  // if (queryResults.error) {
-  //   return <Navigate to="/error" replace />;
-  // }
-  //
-  // useEffect(() => {
-  //   if (!queryResults.isLoading && queryResults.data) {
-  //     setCoinData(queryResults.data);
-  //     setCurrencyAmount(formatNumber(queryResults.data.market_data.current_price[currency] ?? 0));
-  //   }
-  // }, [queryResults.data]);
-  //
-  // const toggleArrow = () => {
-  //   setIsDescriptionShown(!isDescriptionShown);
-  // };
-  //
-  // const handleChangeCurrency = (event: any) => {
-  //   if (event.target.value == CurrencyEnum.KRW) {
-  //     setCurrency(CurrencyEnum.KRW);
-  //   } else {
-  //     setCurrency(CurrencyEnum.USD);
-  //   }
-  // };
-
-  // /**
-  //  * symbol 인풋창에서 심볼을 입력하면 정해진 비율에 따라 계산되어 currency 가 변환되는 메소드
-  //  * @param value
-  //  */
-  // const handleChangeSymbolAmount = (value: string) => {
-  //   setSymbolAmountInSymbol(value, setSymbolAmount);
-  //   setCurrencyAmountInSymbol(coinData, currency, value, setCurrencyAmount);
-  // };
-  //
-  // /**
-  //  * currency 인풋창에서 통화량을 입력하면 정해진 비율에 따라 계산되어 symbol 이 변환되는 메소드
-  //  * @param value
-  //  */
-  // const handleChangeCurrencyAmount = (value: string) => {
-  //   value = value.replace(/,/g, '');
-  //   setCurrencyAmountInCurrency(value, setCurrencyAmount);
-  //   setSymbolAmountInCurrency(coinData, currency, value, setSymbolAmount);
-  // };
   const { id } = useParams();
   const { bookmarks, changeCurrency } = useGlobalContext();
   const [coinData, setCoinData] = useState<ICoinDetail | null>(null);
@@ -107,6 +41,13 @@ const CoinDetailPage = () => {
     },
     refetchOnWindowFocus: false,
   });
+
+  useEffect(() => {
+    if (!queryResults.isLoading && queryResults.data) {
+      setCoinData(queryResults.data);
+      setCurrencyAmount(formatNumber(queryResults.data.market_data.current_price[currency] ?? 0));
+    }
+  }, [queryResults.data, currency]);
 
   const handleChangeSymbolAmount = useCallback(
     (value: string) => {
@@ -195,13 +136,6 @@ const CoinDetailPage = () => {
     },
     [coinData, currency],
   );
-
-  useEffect(() => {
-    if (queryResults.status === 'success' && queryResults.data) {
-      setCoinData(queryResults.data);
-      setCurrencyAmount(formatNumber(queryResults.data.market_data.current_price[currency] ?? 0));
-    }
-  }, [queryResults.data, currency]);
 
   const toggleArrow = () => {
     setIsDescriptionShown(!isDescriptionShown);
