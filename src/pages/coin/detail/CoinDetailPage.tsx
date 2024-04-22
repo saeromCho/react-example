@@ -89,6 +89,16 @@ function setCurrencyAmountInCurrency(
   setCurrencyAmount: (value: ((prevState: string) => string) | string) => void,
 ) {
   if (value === '') {
+    setCurrencyAmount('0');
+    return;
+  }
+
+  // 입력 값이 0으로 시작하고 그 이후에 숫자가 입력되면 0을 제거
+  if (value.match(/^0\d/)) {
+    value = value.substring(1);
+  }
+
+  if (value === '') {
     setCurrencyAmount('0'); // 빈 문자열이면 0을 표시
   } else if (integerOrDecimalUpToTwoPlacesRegex.test(value)) {
     const parts = value.split('.');
@@ -103,18 +113,20 @@ function setSymbolAmountInCurrency(
   value: string,
   setSymbolAmount: (value: ((prevState: string) => string) | string) => void,
 ) {
-  const currentPrice = coinData?.market_data.current_price[currency] ?? 1;
-  const newSymbolAmount = parseFloat(value) / currentPrice;
-  const newSymbolAmountToString = newSymbolAmount.toString();
-  const cleanValue = newSymbolAmountToString
-    .replace(/,/g, '')
-    .match(optionalDecimalWithMaxEightPlacesRegex);
+  if (value.trim() === '') {
+    setSymbolAmount('0');
+    return;
+  }
 
-  if (cleanValue) {
-    const numericValue = cleanValue[0];
-    const parts = numericValue.split('.');
-    parts[0] = parts[0].replace(thousandsSeparatorRegex, ',');
-    setSymbolAmount(parts.join('.'));
+  const currentPrice = coinData?.market_data.current_price[currency] ?? 1;
+  const numericValue = parseFloat(value.replace(/,/g, ''));
+  const newSymbolAmount = numericValue / currentPrice;
+
+  if (newSymbolAmount === 0) {
+    setSymbolAmount('0');
+  } else {
+    const formattedSymbolAmount = newSymbolAmount.toFixed(8); // 소수점 이하 8자리로 포맷, 천 단위 구분자 제거
+    setSymbolAmount(formattedSymbolAmount);
   }
 }
 
@@ -172,10 +184,7 @@ const CoinDetailPage = () => {
    * @param value
    */
   const handleChangeSymbolAmount = (value: string) => {
-    console.log(value);
-
     setSymbolAmountInSymbol(value, setSymbolAmount);
-
     setCurrencyAmountInSymbol(coinData, currency, value, setCurrencyAmount);
   };
 
@@ -185,9 +194,7 @@ const CoinDetailPage = () => {
    */
   const handleChangeCurrencyAmount = (value: string) => {
     value = value.replace(/,/g, '');
-
     setCurrencyAmountInCurrency(value, setCurrencyAmount);
-
     setSymbolAmountInCurrency(coinData, currency, value, setSymbolAmount);
   };
 
