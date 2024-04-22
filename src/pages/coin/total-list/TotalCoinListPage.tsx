@@ -143,7 +143,7 @@ const DropdownSelect = styled.select`
   margin-left: 20px;
   height: 40px;
   border: none;
-  curosor: pointer;
+  cursor: pointer;
 `;
 
 const MoreDiv = styled.div`
