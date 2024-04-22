@@ -58,7 +58,8 @@ const TotalCoinListPage = () => {
       setFetchListData(slicedList);
     } else {
       setViewType(ViewTypeEnum.BOOKMARKS);
-      const sorted = sortBookmarksByMarketCapRank(bookmarks);
+      const slicedList = bookmarks.slice(0, pageSize);
+      const sorted = sortBookmarksByMarketCapRank(slicedList);
       setBookmarkedListData(sorted);
     }
   };
