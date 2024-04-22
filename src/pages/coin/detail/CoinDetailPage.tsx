@@ -5,8 +5,8 @@ import { ICoinDetail } from '@common/interface/interface';
 import { useGlobalContext } from '@contexts/GlobalContext';
 import { CurrencyEnum } from '@lib/enum';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import CoinDescription from '@common/components/CoinDescription';
 import CoinPriceAndChangedRate from '@common/components/CoinPriceAndChangedRate';
 import CurrencyInput from '@common/components/CurrencyInput';
@@ -131,42 +131,42 @@ function setSymbolAmountInCurrency(
 }
 
 const CoinDetailPage = () => {
-  const { id } = useParams();
-  const { bookmarks } = useGlobalContext();
-  const [coinData, setCoinData] = useState<ICoinDetail | null>(null);
-  const [currency, setCurrency] = useState<CurrencyEnum>(CurrencyEnum.KRW);
-  const [isDescriptionShown, setIsDescriptionShown] = useState(false);
-  const [symbolAmount, setSymbolAmount] = useState('1');
-  const [currencyAmount, setCurrencyAmount] = useState('');
-
-  const getQueryKey = () => {
-    return ['coins', id];
-  };
-
-  const fetchData = () => {
-    return getCoin(id);
-  };
-
-  const queryResults = useQuery({
-    queryKey: getQueryKey(),
-    queryFn: fetchData,
-    meta: {
-      errorMessage: '코인 상세 내용을 가져오는데 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.',
-    },
-    refetchOnWindowFocus: false,
-  });
-
-  if (queryResults.error) {
-    return <Navigate to="/error" replace />;
-  }
-
-  useEffect(() => {
-    if (!queryResults.isLoading && queryResults.data) {
-      setCoinData(queryResults.data);
-      setCurrencyAmount(formatNumber(queryResults.data.market_data.current_price[currency] ?? 0));
-    }
-  }, [queryResults.data]);
-
+  // const { id } = useParams();
+  // const { bookmarks } = useGlobalContext();
+  // const [coinData, setCoinData] = useState<ICoinDetail | null>(null);
+  // const [currency, setCurrency] = useState<CurrencyEnum>(CurrencyEnum.KRW);
+  // const [isDescriptionShown, setIsDescriptionShown] = useState(false);
+  // const [symbolAmount, setSymbolAmount] = useState('1');
+  // const [currencyAmount, setCurrencyAmount] = useState('');
+  //
+  // const getQueryKey = () => {
+  //   return ['coins', id];
+  // };
+  //
+  // const fetchData = () => {
+  //   return getCoin(id);
+  // };
+  //
+  // const queryResults = useQuery({
+  //   queryKey: getQueryKey(),
+  //   queryFn: fetchData,
+  //   meta: {
+  //     errorMessage: '코인 상세 내용을 가져오는데 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.',
+  //   },
+  //   refetchOnWindowFocus: false,
+  // });
+  //
+  // if (queryResults.error) {
+  //   return <Navigate to="/error" replace />;
+  // }
+  //
+  // useEffect(() => {
+  //   if (!queryResults.isLoading && queryResults.data) {
+  //     setCoinData(queryResults.data);
+  //     setCurrencyAmount(formatNumber(queryResults.data.market_data.current_price[currency] ?? 0));
+  //   }
+  // }, [queryResults.data]);
+  //
   const toggleArrow = () => {
     setIsDescriptionShown(!isDescriptionShown);
   };
@@ -179,24 +179,122 @@ const CoinDetailPage = () => {
     }
   };
 
-  /**
-   * symbol 인풋창에서 심볼을 입력하면 정해진 비율에 따라 계산되어 currency 가 변환되는 메소드
-   * @param value
-   */
-  const handleChangeSymbolAmount = (value: string) => {
-    setSymbolAmountInSymbol(value, setSymbolAmount);
-    setCurrencyAmountInSymbol(coinData, currency, value, setCurrencyAmount);
-  };
+  // /**
+  //  * symbol 인풋창에서 심볼을 입력하면 정해진 비율에 따라 계산되어 currency 가 변환되는 메소드
+  //  * @param value
+  //  */
+  // const handleChangeSymbolAmount = (value: string) => {
+  //   setSymbolAmountInSymbol(value, setSymbolAmount);
+  //   setCurrencyAmountInSymbol(coinData, currency, value, setCurrencyAmount);
+  // };
+  //
+  // /**
+  //  * currency 인풋창에서 통화량을 입력하면 정해진 비율에 따라 계산되어 symbol 이 변환되는 메소드
+  //  * @param value
+  //  */
+  // const handleChangeCurrencyAmount = (value: string) => {
+  //   value = value.replace(/,/g, '');
+  //   setCurrencyAmountInCurrency(value, setCurrencyAmount);
+  //   setSymbolAmountInCurrency(coinData, currency, value, setSymbolAmount);
+  // };
+  const { id } = useParams();
+  const { bookmarks, changeCurrency } = useGlobalContext();
+  const [coinData, setCoinData] = useState<ICoinDetail | null>(null);
+  const [currency, setCurrency] = useState<CurrencyEnum>(CurrencyEnum.KRW);
+  const [isDescriptionShown, setIsDescriptionShown] = useState(false);
+  const [symbolAmount, setSymbolAmount] = useState('1');
+  const [currencyAmount, setCurrencyAmount] = useState('');
 
-  /**
-   * currency 인풋창에서 통화량을 입력하면 정해진 비율에 따라 계산되어 symbol 이 변환되는 메소드
-   * @param value
-   */
-  const handleChangeCurrencyAmount = (value: string) => {
-    value = value.replace(/,/g, '');
-    setCurrencyAmountInCurrency(value, setCurrencyAmount);
-    setSymbolAmountInCurrency(coinData, currency, value, setSymbolAmount);
-  };
+  const fetchData = useCallback(() => getCoin(id), [id]);
+
+  const queryResults = useQuery({
+    queryKey: ['coins', id],
+    queryFn: fetchData,
+    meta: {
+      errorMessage: '코인 상세 내용을 가져오는데 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.',
+    },
+    refetchOnWindowFocus: false,
+  });
+
+  const handleChangeSymbolAmount = useCallback(
+    (value: string) => {
+      if (value.trim() === '') {
+        setSymbolAmount('0');
+        setCurrencyAmount('0');
+        return;
+      }
+
+      if (value.startsWith('0') && value.length > 1) {
+        if (!isNaN(Number(value[1]))) {
+          value = value.substring(1); // "01", "02" 등의 경우 "0"을 제거
+        }
+      }
+
+      const cleanValue = value.replace(/,/g, '').match(optionalDecimalWithMaxEightPlacesRegex);
+      if (cleanValue) {
+        const numericValue = cleanValue[0];
+        const parts = numericValue.split('.');
+        parts[0] = parts[0].replace(thousandsSeparatorRegex, ',');
+        if (parts.length > 1 && parts[1].length > 8) {
+          parts[1] = parts[1].substring(0, 8);
+        }
+        setSymbolAmount(parts.join('.'));
+      }
+
+      // 숫자 변환 처리 전에 0만 연속으로 들어올 경우 처리
+      if (value.replace(/,/g, '') === '0') {
+        setCurrencyAmount('0');
+        return;
+      }
+
+      // 소수점 8자리 이상 입력 방지 로직 추가
+      const numericValue = parseFloat(value.replace(/,/g, ''));
+      if (numericValue.toString().split('.')[1]?.length > 8) {
+        return; // 소수점 8자리 이상의 입력은 처리하지 않음
+      }
+      const newCurrencyAmount = numericValue * (coinData?.market_data.current_price[currency] ?? 0);
+      if (newCurrencyAmount === 0) {
+        setCurrencyAmount('0');
+      } else {
+        setCurrencyAmount(newCurrencyAmount.toFixed(2).replace(thousandsSeparatorRegex, ','));
+      }
+    },
+    [coinData, currency],
+  );
+
+  const handleChangeCurrencyAmount = useCallback(
+    (value: string) => {
+      value = value.replace(/,/g, '');
+      if (value === '') {
+        setCurrencyAmount('0');
+        setSymbolAmount('0');
+        return;
+      }
+
+      if (value.match(/^0\d/)) {
+        value = value.substring(1);
+      }
+
+      if (integerOrDecimalUpToTwoPlacesRegex.test(value)) {
+        const parts = value.split('.');
+        parts[0] = parts[0].replace(thousandsSeparatorRegex, ',');
+        setCurrencyAmount(parts.join('.'));
+      }
+
+      const currentPrice = coinData?.market_data.current_price[currency] ?? 1;
+      const numericValue = parseFloat(value);
+      const newSymbolAmount = numericValue / currentPrice;
+      setSymbolAmount(newSymbolAmount.toFixed(8));
+    },
+    [coinData, currency],
+  );
+
+  useEffect(() => {
+    if (queryResults.status === 'success' && queryResults.data) {
+      setCoinData(queryResults.data);
+      setCurrencyAmount(formatNumber(queryResults.data.market_data.current_price[currency] ?? 0));
+    }
+  }, [queryResults.data, currency]);
 
   return (
     <WrapperDiv>
