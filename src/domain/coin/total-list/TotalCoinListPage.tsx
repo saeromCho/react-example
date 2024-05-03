@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getCoins } from '@apis/coinGecko';
 import CoinTable from '@common/components/CoinTable';
 import { getColumnsData, sortBookmarksByMarketCapRank } from '@lib/utils';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ICoin } from '@common/interface/interface';
 import { useGlobalContext } from '@contexts/GlobalContext';
 import { CurrencyEnum, PageSizeEnum, ViewTypeEnum } from '@lib/enum';
@@ -21,11 +21,21 @@ const TotalCoinListPage = () => {
   const [page, setPage] = useState(1);
 
   const getQueryKey = () => {
+    /// TODO: 여기에 'coins' 는 안 넣어도 됐는데 넣었네.. 후... 더블체킹 좀 할 걸..
     return ['coins', currency, pageSize, page];
   };
   const getData = () => {
+    /// TODO: market_cap_desc 를 API 명세에 맞게 Enum 값으로 관리하거나 contant 로 뺄 걸 그랬다.
+    /// TODO: 'en' 도 마찬가지로 Enum 값으로 관리하거나 내가 만들어둔 locale context API 변수를 사용할 걸 그랬다. 지금 보이네.
     return getCoins(currency, 'market_cap_desc', pageSize, page, 'en');
   };
+
+  /// TODO: 여기서는 동일한 드랍다운 눌렀을 때 API 호출하는지 확인해보고, 호출한다면 useCallback 을 쓰는 게 맞는 거 같음. 근데 useEffect 내 의존성 배열에 담겨있는 변수 자체가 변경되지 않으면 API 호출을 안하기 때문에 useCallback 을 안해도 상관없을 거 같기도 하고..?
+  /// TODO: useCallback 사용해서 이렇게 해도 됐는데 위에꺼 처럼 했네.. CoinDetailPage 에서는 useCallback 써서 구현했는데 여기서는 이렇게 왜 쳐 했냐; 했지만 이미 useEffect 에서 저 세개에 대해서만 호출되게끔 해서 문제는 없고 동일할 거 같긴 한데, 두 페이지에서 쓰이는 코드의 통일성 측면에서 조금 맞지 않음..
+  // const getData = useCallback(
+  //   () => getCoins(currency, 'market_cap_desc', pageSize, page, 'en'),
+  //   [currency, pageSize, page],
+  // );
 
   const queryResults = useQuery({
     queryKey: getQueryKey(),
@@ -35,6 +45,7 @@ const TotalCoinListPage = () => {
     },
   });
 
+  /// TODO: 이 코드 필요없는 코드인데 왜 있냐;;
   useEffect(() => {
     if (viewType == ViewTypeEnum.BOOKMARKS) {
     }
@@ -85,6 +96,7 @@ const TotalCoinListPage = () => {
     }
     setPage(1);
     if (viewType == ViewTypeEnum.BOOKMARKS) {
+      /// TODO: 이거는 리팩토링해서 따로 뺴서 재사용 할 수 있었는데 안 뺐네;
       const slicedList = bookmarks.slice(0, event.target.value);
       const sorted = sortBookmarksByMarketCapRank(slicedList);
       setBookmarkedListData(sorted);
@@ -125,6 +137,7 @@ const TotalCoinListPage = () => {
             name={'가상자산 시세 목록'}
             data={viewType == ViewTypeEnum.TOTAL ? fetchListData : bookmarkedListData}
             columns={getColumnsData(currency)}
+            /// TODO: Sorry ~ 이 변수도 constant 로 뺄 걸..
             noDataMessage="Sorry, No coins data available"
           />
           {!isLoadingMore && viewType == ViewTypeEnum.TOTAL && fetchListData.length > 0 && (

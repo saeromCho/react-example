@@ -31,22 +31,30 @@ const CoinDetailPage = () => {
   const [symbolAmount, setSymbolAmount] = useState('1');
   const [currencyAmount, setCurrencyAmount] = useState('');
 
+  /// TODO: URL 로 치고 들어왔을 때 id 가 동일하다면 이전 콜백 사용하면 유용할 거 같다고 생각하긴 했지만, 사실 URL 로 새로 치고 들어오면 이전 상태가 유지가 되어있지 않으므로 사실 필요가 없을 수도 있겠다 싶네. 사실, 해당 페이지에서 코인을 바꿀 수는 없어, 그렇기 때문에 useCallback 이 필요없다고 생각함. 메모이제이션된 콜백을 사용할 수 있는 경우 자체가 없다는 말이야.
   const fetchData = useCallback(() => getCoin(id), [id]);
 
   const queryResults = useQuery({
+    /// TODO: 여기도 마찬가지. 'coins' 는 안 넣어도 됐는데 넣었네.. 후... 더블체킹 좀 할 걸..
     queryKey: ['coins', id],
     queryFn: fetchData,
     meta: {
       errorMessage: '코인 상세 내용을 가져오는데 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.',
     },
+    /// TODO: 전체 목록 스크린에서는 autoFetch 가 필요하다고 생각했고, 여기서는 굳이라고 생각했다. 아닌가.. 다시 생각해보니 여기서도 해줬어야 됐나 싶네.
     refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
+    console.log('queryResults.data');
+    console.log(queryResults.data);
     if (!queryResults.isLoading && queryResults.data) {
       setCoinData(queryResults.data);
+      /// TODO: queryResults.data.market_data.current_price[currency] 이거 변수로 뺼 걸 그랬다; 너무 기네..
       setCurrencyAmount(formatNumber(queryResults.data.market_data.current_price[currency] ?? 0));
     }
+    /// TODO: 여기에는 currency 값에 대한 의존성 배열 설정이 필요없는데..? currency 를 바꿔도 API 호출 안하는데 왜 걸었어?
+    /// TODO: currency 가 바뀌어도 queryResults.data 값이 있을 수 있나? API 호출을 안하는데?(queryKey 자체에 currency 가 안걸려있어서 API 호출을 안할 거임.) API 호출안하는 거라고 생각하는데 안하는 게 맞는지 확인해볼 것. 호출안하는 거 맞음. 하지만 벗, 호출은 안하지만 queryResults.data 값은 있어. 이전 값을 갖고 있나봐. 그래서 currency 상태에 따라 의존성이 있어야 되긴 해.
   }, [queryResults.data, currency]);
 
   const handleChangeSymbolAmount = useCallback(
@@ -129,6 +137,7 @@ const CoinDetailPage = () => {
       const newSymbolAmount = numericValue / currentPrice;
       const formattedSymbolAmount = newSymbolAmount.toFixed(8); // 소수점 이하 8자리로 포맷, 천 단위 구분자 제거
       if (formattedSymbolAmount === '0.00000000') {
+        /// TODO: 이 코드의 의미가 '숫자가 매우 작아서 0으로 표시되어야 할 경우' 가 아니지 않아? 0.00000000 이면 0으로 보여준다 아니야? 하..
         setSymbolAmount('0'); // 추가된 조건, 숫자가 매우 작아서 0으로 표시되어야 할 경우
       } else {
         setSymbolAmount(formattedSymbolAmount);

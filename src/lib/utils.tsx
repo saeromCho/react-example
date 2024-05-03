@@ -97,6 +97,7 @@ export const formatNumber = (value: number, hasDecimal = true) => {
   return formatter.format(value);
 };
 
+/// TODO: 정렬순서가 어떤 정렬 순서인지 알기.
 export const sortBookmarksByMarketCapRank = (bookmarks: ICoin[]) =>
   bookmarks.sort((a, b) => {
     if (!a.market_cap_rank) return 1;

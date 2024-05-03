@@ -45,6 +45,8 @@ const App = () => {
             </Route>
             <Route path="/coins/:id" element={<CoinDetailPage />} />
             <Route path="/error" element={<ErrorPage />}></Route>
+            {/* TODO: 이렇게 했어야 했는데 왜 <Route></Route> 왜 이렇게 했어... */}
+            {/* <Route path="/error" element={<ErrorPage />} /> */}
           </Routes>
         </BrowserRouter>
         <ReactQueryDevtools initialIsOpen={false} />
