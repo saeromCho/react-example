@@ -2,6 +2,7 @@ import { ICoinPriceAndChangedRateProps } from '@common/interface/interface';
 import { CurrencyEnum } from '@lib/enum';
 import { formatNumber } from '@lib/utils';
 
+/// TODO: 이 페이지는 전체적으로 styled-components 로 작업했어야 했는데 못하고 제출한 페이지.
 const CoinPriceAndChangedRate: React.FC<ICoinPriceAndChangedRateProps> = ({
   currency,
   currentPrice,
@@ -51,6 +52,7 @@ const CoinPriceAndChangedRate: React.FC<ICoinPriceAndChangedRateProps> = ({
             marginTop: '4px',
           }}
         >
+          {/* TODO: 스태틱한 값인 1.0000000 에 대해서는 contant 로 빼서 진행하는 게 나았다고 생각함 */}
           <div style={{ fontSize: '14px', color: 'grey' }}>
             1.0000000 {symbol.toLocaleUpperCase()}
           </div>

@@ -69,11 +69,19 @@ const TotalCoinListPage = () => {
       setFetchListData(slicedList);
     } else {
       setViewType(ViewTypeEnum.BOOKMARKS);
-      const slicedList = bookmarks.slice(0, pageSize);
-      const sorted = sortBookmarksByMarketCapRank(slicedList);
-      setBookmarkedListData(sorted);
+      /// TODO: 이거는 리팩토링해서 따로 뺴서 재사용 할 수 있었는데 안 뺐네; => sortAndChangeBookmarkList 메소드처럼 하는 게 맞았음.
+      sortAndChangeBookmarkList(pageSize);
+      // const slicedList = bookmarks.slice(0, pageSize);
+      // const sorted = sortBookmarksByMarketCapRank(slicedList);
+      // setBookmarkedListData(sorted);
     }
   };
+  /// TODO: 이 메소드처럼 따로 빼는 게 맞았음
+  const sortAndChangeBookmarkList = (sliceCount: number) => {
+    const slicedList = bookmarks.slice(0, sliceCount);
+    const sorted = sortBookmarksByMarketCapRank(slicedList);
+    setBookmarkedListData(sorted);
+  }
 
   const handleChangeCurrency = (event: any) => {
     if (event.target.value == CurrencyEnum.KRW) {
@@ -97,9 +105,10 @@ const TotalCoinListPage = () => {
     setPage(1);
     if (viewType == ViewTypeEnum.BOOKMARKS) {
       /// TODO: 이거는 리팩토링해서 따로 뺴서 재사용 할 수 있었는데 안 뺐네;
-      const slicedList = bookmarks.slice(0, event.target.value);
-      const sorted = sortBookmarksByMarketCapRank(slicedList);
-      setBookmarkedListData(sorted);
+      sortAndChangeBookmarkList(event.target.value);
+      // const slicedList = bookmarks.slice(0, event.target.value);
+      // const sorted = sortBookmarksByMarketCapRank(slicedList);
+      // setBookmarkedListData(sorted);
     }
   };
 
