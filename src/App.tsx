@@ -41,6 +41,7 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LayoutWithGNB />}>
+              {/* <Route index element={<Navigate replace to="/coins" />} />는 기본 경로(/)로 접근했을 때 사용자를 자동으로 /coins 경로로 리디렉션합니다. 이를 통해 특정 경로로 사용자를 안내하거나 초기 로드 시 특정 페이지를 보여줄 수 있습니다. replace 속성을 통해 브라우저 기록을 대체하여 사용자 경험을 최적화할 수 있습니다. */}
               <Route index element={<Navigate replace to="/coins" />} />
               <Route path="coins" element={<TotalCoinListPage />} />
               <Route path="bookmarked_list" element={<BookmarkedCoinListPage />} />

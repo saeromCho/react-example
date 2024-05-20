@@ -28,23 +28,28 @@ module.exports = {
   },
 
   // ESLint에 추가적인 기능을 제공하는 플러그인들을 명시
-  plugins: ['react', '@typescript-eslint', 'prettier'], // 'react-hooks', 왜 이게 추가가 안되어있지?
+  plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier'], // 'react-hooks', 왜 이게 추가가 안되어있지?
 
   extends: [
     'eslint:recommended', // ESLint의 기본 권장 규칙
     'plugin:react/recommended', // React를 위한 권장 규칙
     'plugin:@typescript-eslint/recommended', // TypeScript를 위한 권장 규칙
     'plugin:prettier/recommended', // Prettier와 ESLint를 함께 사용하기 위한 설정
-    // 'plugin:react-hooks/recommended', // React Hooks를 위한 권장 규칙
+    'plugin:react-hooks/recommended', // React Hooks를 위한 권장 규칙
+    
   ],
 
   // 특정 규칙들을 오버라이드하거나 추가하는 섹션
   rules: {
      // React를 사용할 때 'React'를 import 하지 않아도 되게 설정
     'react/react-in-jsx-scope': 0,
-
     'no-unused-vars': 'warn',
     'no-console': 'off',
+    // 'react/jsx-uses-react': 'error',
+    'react/jsx-uses-vars': 'error',
+    // 'react/react-in-jsx-scope': 'error', // React 17 이전 버전용 규칙
+    'react-hooks/rules-of-hooks': 'error', // Hooks의 규칙 적용
+    'react-hooks/exhaustive-deps': 'warn', // 효과의 종속성 검사
   },
   // ESLint가 파일을 무시하도록 하는 패턴들이다.
   ignorePatterns: ['node_modules/', 'build/', 'dist/', 'webpack.*.js'],
