@@ -1,22 +1,30 @@
 {
+   // compilerOptions: 어떻게 컴파일 할 것인지.
   "compilerOptions": {
-    "target": "es6",
-    "lib": [
+    "target": "es6", // 어떤 자바스크립트 코드로 컴파일 할 지. JavaScript 코드의 ECMAScript 버전을 ES6로 설정한다.
+    // 컴파일 과정에서 사용되는 라이브러리 지정, DOM의 경우 window, document같은 DOM API를 접근할 수 있게 해주며, ESNext의 경우 JS 제일 최신문법을 의미한다.
+    "lib": [ // TypeScript 프로젝트에서 사용되는 전역 라이브러리 파일을 지정한다.
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext" // ESNext는 젤 최신거
     ],
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "jsx": "react-jsx",
-    "outDir": "./dist",
-    "baseUrl": ".",
-    "paths": {
+    "esModuleInterop": true, // ES 모듈과 CommonJS 모듈 간의 호환성을 용이하게 한다.
+    "module": "esnext", // import문 컴파일 시 해석방법. 프로젝트에서 사용하는 모듈 시스템을 설정하는 역할을 한다.
+    // ESNext: 가장 최신의 ECMAScript 표준 모듈 시스템으로 최신 웹 브라우저 대부분에서 지원된다. 트리 쉐이킹 등 최적화 기능을 사용할 수 있다.
+    "moduleResolution": "node", // 모듈을 해석하고 가져올 때 사용하는 알고리즘 방식을 설정하는 옵션이다.
+    "resolveJsonModule": true, // JSON을 import 하여 사용할 수 있도록 한다.
+    "forceConsistentCasingInFileNames": true, // 파일 이름의 대소문자 일관성을 강제한다.
+    "strict": true, // 기본으로 활성화, TypeScript 코드의 타입 검사를 엄격하게 수행하도록 한다.
+    "skipLibCheck": true, // 프로젝트에 사용된 라이브러리들 타입체킹 스킵 (컴파일 시간 감소). 선언 파일(*. d.ts)에 대한 타입 검사를 건너뛰도록 설정한다.
+    "jsx": "react-jsx", // tsx로 작성된 파일을 어떻게 컴파일 할 지 ex) React.createElement, _jsx('div',(),void 0), tsx로 작성된 JSX 파일을 어떻게 컴파일 할 지 정하는 속성이다. React.createElement 형태로 변환할지, _jsx('div',(),void 0) 형태로 변환할 지 정할 수 있는 속성이다. 위 코드에서는 _jsx('div',(),void 0) 형태로 변환하고자 react-jsx 를 사용하였다. 
+    // TypeScript 파일 내에서 JSX 문법을 사용하는 방식을 설정한다.
+    // preserve: jsx를 출력 파일에 그대로 보존한다. babel과 같은 다른 변환 단계에서 추가로 사용 가능하다.
+    // react: React.createElement로 출력한다.
+    // react-jsx: JSX를 React.jsx로 변환한다. React 17 이상에서 사용하는 새로운 JSX 변환 방식을 적용한다.
+
+    "outDir": "./dist", // 컴파일 시 어떤 경로에 결과물 위치시킬지 결정. 컴파일된 JavaScript 파일들을 출력할 디렉터리를 지정한다.
+    "baseUrl": ".", // 절대경로 파일을 import 할 때 사용하는 속성
+    "paths": { // 절대 경로를 지정해주는 속성이다. webpack config와 함께 지정해주면 사용 가능하다.
       "@*": [
         "src/*"
       ],
@@ -40,10 +48,10 @@
       ]
     }
   },
-  "include": [
+  "include": [ // include 속성은 프로젝트에서 컴파일할 파일들을 지정. TypeScript 컴파일러가 컴파일 과정에서 포함할 파일이나 디렉터리를 지정한다.
     "src"
   ],
-  "exclude": [
+  "exclude": [ // TypeScript 컴파일러가 컴파일 과정에서 제외할 파일이나 디렉터리를 지정한다.
     "node_modules",
     "dist",
     ".eslintrc.cjs"

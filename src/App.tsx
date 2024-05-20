@@ -36,6 +36,8 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalProvider>
+        {/* HTML5 History API를 사용하여 URL과 UI를 동기해주는 <Router>.
+리액트 라우터 돔을 적용하고 싶은 컴포넌트의 최상위 컴포넌트를 감싸주는 래퍼 컴포넌트. 페이지를 새로고침 하지 않고도 주소를 변경할 수 있도록 해주고, 현재 주소에 관련된 정보를 props로 조회 및 사용을 가능하게 함. */}
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LayoutWithGNB />}>
