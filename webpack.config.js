@@ -24,11 +24,13 @@ module.exports = {
           test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
           name: 'react',
           chunks: 'all',
+          priority: 10, // 높은 우선순위 설정
         },
         // vendors: node_modules 디렉토리의 모듈들을 별도의 청크로 분리합니다.
         vendors: {
           test: /\/node_modules\//i,
           chunks: 'all',
+          priority: -10, // 낮은 우선순위 설정
         },
       },
     },
@@ -40,7 +42,8 @@ module.exports = {
     runtimeChunk: { name: 'runtime' },
   },
   resolve: { // webpack에서 파일 경로를 해석하는 방법을 설정한다.
-    // 모듈을 해석할 때 확장자를 생략할 수 있도록 합니다. .tsx, .ts, .js 파일을 자동으로 해석합니다.
+    // 모듈을 해석할 때 확장자를 생략할 수 있도록 합니다. .tsx, .ts, .js 파일을 자동으로 해석합니다. 
+    // 웹팩은 순서대로 찾기 때문에, 많이 사용되는 확장자를 앞에 쓰는 것이 유리하다.
     extensions: ['.tsx', '.ts',  '.js'], // webpack이 해석할 수 있는 파일 확장자를 나열한다.
     // 절대경로 설정. 설정한 경로의 별칭을 지정한다. 이를 사용해 코드 내에서 짧은 경로로 참조할 수 있다.
     // @/components는 ./src/components를 참조
